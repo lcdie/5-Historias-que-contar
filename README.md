@@ -114,24 +114,3 @@ Para evitar confusión, **no se listan como opciones de visualización/ejecució
 ├── docker-compose.yml
 ├── .devcontainer/
 └── .github/
-```
-
----
-
-## Preparación para subir a GitHub (git push)
-
-El repositorio está listo para versionarse/subirse manualmente. Desde la raíz:
-
-```bash
-git status
-git add -A
-git commit -m "Proyecto storytelling con datos: notebooks, informe, datos y HTML generado"
-
-# Configura tu remoto (ejemplo) y sube:
-# git remote add origin <URL_DE_TU_REPOSITORIO>
-# git branch -M main
-# git push -u origin main
-```
-
-> No se configura ningún remoto automáticamente. Ajusta la rama/remoto según tu repositorio.
->>>>>>> 721a778 (Proyecto storytelling con datos: notebooks, informe, datos y HTML ejecutado)
