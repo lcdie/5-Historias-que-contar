@@ -1,0 +1,124 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -q pandas numpy matplotlib seaborn plotly scikit-learn scipy statsmodels jupyter nbconvert ipykernel jupyterlite-core pyodide-kernel
+
+      - name: Download data
+        run: python data/download_data.py
+
+      - name: Build HTML (docs_html/)
+        run: |
+          mkdir -p docs_html
+          for nb in notebooks/*.ipynb; do
+            echo "Ejecutando $nb"
+            jupyter nbconvert --to html "$nb" --output-dir docs_html --execute --ExecutePreprocessor.timeout=900 || \
+            jupyter nbconvert --to html "$nb" --output-dir docs_html
+          done
+          # Index.html
+          cat > docs_html/index.html << 'EOF'
+<!DOCTYPE html>
+<html><head><title>Storytelling con Datos - MATCOM</title>
+<style>body{font-family:sans-serif;max-width:800px;margin:2rem auto;padding:0 1rem}
+h1{color:#1f77b4} a{color:#1f77b4} .card{border:1px solid #ddd;border-radius:8px;padding:1rem;margin:1rem 0}
+.card h2{margin-top:0}</style></head><body>
+<h1>📊 Storytelling con Datos — 5 Historias, 5 Arquetipos</h1>
+<p><strong>MATCOM — Universidad de La Habana</strong> | Entrega: 2026-11-20</p>
+<p>Versión estática. <a href="../lite/">→ JupyterLite (WASM)</a> | <a href="https://mybinder.org/v2/gh/TU_USUARIO/storytelling-datos-matcom/HEAD?labpath=notebooks">→ Binder (TODO)</a></p>
+<hr>
+<div class="card"><h2>1. La curva que no miente</h2><p>Serie temporal + cambio estructural — CO₂ Mauna Loa</p><a href="01_series_temporales_co2.html">Leer →</a></div>
+<div class="card"><h2>2. Cuando el promedio miente</h2><p>Paradoja de Simpson — Gapminder</p><a href="02_comparacion_gapminder.html">Leer →</a></div>
+<div class="card"><h2>3. La aguja en el pajar financiero</h2><p>Outliers + Anomalías — Credit Card Fraud</p><a href="03_outliers_fraude.html">Leer →</a></div>
+<div class="card"><h2>4. Pingüinos como termómetros</h2><p>Drill-down jerárquico — Palmer Penguins</p><a href="04_drilldown_penguins.html">Leer →</a></div>
+<div class="card"><h2>5. ¿Ingreso causa precio o es la playa?</h2><p>Causalidad espacial — California Housing</p><a href="05_interseccion_california.html">Leer →</a></div>
+<hr><p><small>Generado: $(date)</small></p>
+</body></html>
+EOF
+
+      - name: Build JupyterLite (docs_lite/)
+        run: |
+          jupyter lite build --contents notebooks --output-dir docs_lite --force
+          # Custom index
+          cat > docs_lite/index.html << 'EOF'
+<!DOCTYPE html>
+<html><head><title>Storytelling con Datos — JupyterLite (WASM)</title>
+<link rel="stylesheet" href="style.css"></head><body>
+<header style="background:#1f77b4;color:white;padding:1rem;text-align:center">
+<h1>📊 Storytelling con Datos — JupyterLite (WASM)</h1>
+<p>Ejecuta notebooks en el navegador. <strong>Sin instalar nada.</strong> 
+<a href="../html/" style="color:#ffd700">→ HTML estático</a> | 
+<a href="https://mybinder.org/v2/gh/TU_USUARIO/storytelling-datos-matcom/HEAD?labpath=notebooks" style="color:#ffd700">→ Binder (TODO)</a></p>
+</header>
+<div id="app"></div>
+<script src="index.js"></script>
+</body></html>
+EOF
+
+      - name: Upload HTML artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs_html
+
+      - name: Upload Lite artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jupyterlite-site
+          path: docs_lite
+          retention-days: 30
+
+  deploy-html:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages (HTML)
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  deploy-lite:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Lite artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: jupyterlite-site
+          path: docs_lite
+
+      - name: Deploy to gh-pages branch (JupyterLite)
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs_lite
+          publish_branch: gh-pages
+          cname: ''

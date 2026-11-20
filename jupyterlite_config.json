@@ -1,0 +1,9 @@
+{
+    "jupyterlite": {
+        "contents": "notebooks",
+        "outputDir": "docs_lite",
+        "settings": {
+            "theme": "JupyterLab Dark"
+        }
+    }
+}

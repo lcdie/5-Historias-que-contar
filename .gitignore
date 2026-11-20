@@ -1,0 +1,34 @@
+# Entorno
+.env
+.venv
+__pycache__/
+*.pyc
+
+# Datos crudos (pesados) - incluidos por decisión del autor para este repositorio
+# data/raw/*.csv
+# data/raw/*.zip
+# Excepción: creditcard.csv no se versiona (generable con data/download_data.py)
+data/raw/creditcard.csv
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Reportes generados
+reports/figures/*.png
+reports/figures/*.pdf
+reports/figures/*.html
+reports/*.html
+
+# Instaladores/artefactos temporales
+miniconda*.sh
+*.tar.gz
+*.tgz

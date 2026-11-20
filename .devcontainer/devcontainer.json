@@ -1,0 +1,30 @@
+{
+  "name": "Storytelling con Datos - MATCOM",
+  "build": {
+    "dockerfile": "../Dockerfile"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter",
+        "ms-python.vscode-pylance",
+        "github.vscode-github-actions"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/opt/conda/envs/storytelling-matcom/bin/python",
+        "jupyter.jupyterServerType": "local",
+        "notebook.defaultKernel": "python3"
+      }
+    }
+  },
+  "postCreateCommand": "cd /workspaces/storytelling-datos-matcom && python data/download_data.py",
+  "forwardPorts": [8888],
+  "portsAttributes": {
+    "8888": {
+      "label": "JupyterLab",
+      "onAutoForward": "openPreview"
+    }
+  },
+  "remoteUser": "root"
+}

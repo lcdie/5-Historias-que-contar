@@ -1,0 +1,25 @@
+name: storytelling-matcom-lite
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pandas=2.2
+  - numpy=1.26
+  - matplotlib=3.8
+  - seaborn=0.13
+  - plotly=5.20
+  - scikit-learn=1.4
+  - scipy=1.13
+  - statsmodels=0.14
+  - jupyter=1.0
+  - nbconvert=7.16
+  - pip
+  - pip:
+      - palmerpenguins==0.2.4
+      - ydata-profiling==4.9
+      - ruptures==1.2
+      - pingouin==0.5
+      - scikit-posthocs==0.8
+      - jupyterlite-core==0.2.0
+      - pyodide-kernel==0.2.0

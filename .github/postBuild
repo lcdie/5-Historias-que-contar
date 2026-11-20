@@ -1,0 +1,5 @@
+#!/bin/bash
+set -e
+# Instalar dependencias del sistema para prophet, libpysal, etc.
+apt-get update && apt-get install -y -q g++ make cmake 2>/dev/null || true
+pip install -q prophet==1.1 pmdarima==2.0 libpysal==5.0 spreg==1.2 econml==0.15 esda==3.0 splot==1.0
