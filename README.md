@@ -1,12 +1,18 @@
-<<<<<<< HEAD
-# 5-Historias-que-contar
-=======
 # Storytelling con Datos: 5 Arquetipos, 5 Historias
 
 **Curso:** Ciencia de Datos Avanzada — **Facultad:** MATCOM, Universidad de La Habana  
+**Autor:** Luis Calderón Denis  
 **Entrega:** 2026-11-20
 
-Proyecto con 5 historias basadas en datos (una por arquetipo), notebooks reproducibles y un informe crítico. Este README describe **únicamente las formas funcionales disponibles en el estado actual del repositorio**.
+Proyecto con **5 historias basadas en datos** (una por arquetipo), notebooks reproducibles, HTML ejecutado e informe crítico. Este README describe **únicamente las formas funcionales disponibles en el estado actual del repositorio** y dónde encontrar cada entregable.
+
+## Entregables y cumplimiento de la consigna
+
+- **5 arquetipos / 5 historias con datos:** desarrolladas en `notebooks/01`–`05` y disponibles ya ejecutadas en `docs_html/`.
+- **≥ 2 cuartillas por historia:** cada notebook incluye narrativa analítica extensa (contexto, desarrollo, evidencia con datos, interpretación y cierre), coherente con su dataset; la versión de lectura recomendada es el HTML ejecutado correspondiente.
+- **Informe crítico por historia:** [`INFORME_CRITICO_ARQUETIPOS.md`](INFORME_CRITICO_ARQUETIPOS.md) justifica el arquetipo elegido y argumenta por qué cada caso es una historia con datos.
+- **Rigor y coherencia con el dataset:** cada historia trabaja sobre el dataset indicado, explicita supuestos/limitaciones y fundamenta conclusiones en evidencia computada; ver además [`FUENTES_Y_DATOS.md`](FUENTES_Y_DATOS.md).
+- **Reporte técnico del proyecto:** [`REPORTE_TECNICO.md`](REPORTE_TECNICO.md).
 
 ---
 
@@ -79,16 +85,17 @@ Para evitar confusión, **no se listan como opciones de visualización/ejecució
 
 ## Contenido del proyecto
 
-| Historia | Arquetipo | Dataset (en `data/raw/`) | Enfoque de la historia |
-|---|---|---|---|
-| 1. La curva que no miente | Serie temporal + cambio estructural | CO₂ Mauna Loa (`co2_mm_mlo.csv`) | Tendencia, estacionalidad, quiebres y aceleración |
-| 2. Cuando el promedio miente | Comparación multivariable + paradoja de Simpson | Gapminder (`gapminder.csv`) | Pooled vs within/between, agregación y heterogeneidad |
-| 3. La aguja en el pajar financiero | Outliers + detección de anomalías | Credit Card Fraud (`creditcard.csv`, proxy sintético reproducible generado localmente por defecto) | Desbalance, métricas PR/costo, validación temporal, no supervisado vs supervisado |
-| 4. Pingüinos como termómetros | Drill-down jerárquico + descomposición de varianza | Palmer Penguins (`penguins.csv`) | Jerarquías, varianza por niveles, diseño no balanceado |
-| 5. ¿Ingreso causa precio o es la playa? | Intersección multivariable / confounding espacial | California Housing (`california_housing.csv`) | Efectos parciales, dependencia espacial, heterogeneidad y validación |
+| Historia | Arquetipo | Dataset (en `data/raw/`) | Enfoque de la historia | Notebook | Lectura (HTML) |
+|---|---|---|---|---|---|
+| 1. La curva que no miente | Serie temporal + cambio estructural | CO₂ Mauna Loa (`co2_mm_mlo.csv`) | Tendencia, estacionalidad, quiebres y aceleración | [`notebooks/01_series_temporales_co2.ipynb`](notebooks/01_series_temporales_co2.ipynb) | [`docs_html/01_series_temporales_co2.html`](docs_html/01_series_temporales_co2.html) |
+| 2. Cuando el promedio miente | Comparación multivariable + paradoja de Simpson | Gapminder (`gapminder.csv`) | Pooled vs within/between, agregación y heterogeneidad | [`notebooks/02_comparacion_gapminder.ipynb`](notebooks/02_comparacion_gapminder.ipynb) | [`docs_html/02_comparacion_gapminder.html`](docs_html/02_comparacion_gapminder.html) |
+| 3. La aguja en el pajar financiero | Outliers + detección de anomalías | Credit Card Fraud (`creditcard.csv`, proxy sintético reproducible generado localmente por defecto) | Desbalance, métricas PR/costo, validación temporal, no supervisado vs supervisado | [`notebooks/03_outliers_fraude.ipynb`](notebooks/03_outliers_fraude.ipynb) | [`docs_html/03_outliers_fraude.html`](docs_html/03_outliers_fraude.html) |
+| 4. Pingüinos como termómetros | Drill-down jerárquico + descomposición de varianza | Palmer Penguins (`penguins.csv`) | Jerarquías, varianza por niveles, diseño no balanceado | [`notebooks/04_drilldown_penguins.ipynb`](notebooks/04_drilldown_penguins.ipynb) | [`docs_html/04_drilldown_penguins.html`](docs_html/04_drilldown_penguins.html) |
+| 5. ¿Ingreso causa precio o es la playa? | Intersección multivariable / confounding espacial | California Housing (`california_housing.csv`) | Efectos parciales, dependencia espacial, heterogeneidad y validación | [`notebooks/05_interseccion_california.ipynb`](notebooks/05_interseccion_california.ipynb) | [`docs_html/05_interseccion_california.html`](docs_html/05_interseccion_california.html) |
 
-- **Informe crítico:** [`INFORME_CRITICO_ARQUETIPOS.md`](INFORME_CRITICO_ARQUETIPOS.md)
-- **Notebooks:** [`notebooks/`](notebooks/)
+- **Informe crítico (arquetipos/narrativa):** [`INFORME_CRITICO_ARQUETIPOS.md`](INFORME_CRITICO_ARQUETIPOS.md)
+- **Fuentes y datos:** [`FUENTES_Y_DATOS.md`](FUENTES_Y_DATOS.md)
+- **Reporte técnico del proyecto:** [`REPORTE_TECNICO.md`](REPORTE_TECNICO.md)
 - **Código reutilizable:** [`src/`](src/)
 - **Script de datos:** [`data/download_data.py`](data/download_data.py)
 
@@ -100,10 +107,13 @@ Para evitar confusión, **no se listan como opciones de visualización/ejecució
 .
 ├── README.md
 ├── INFORME_CRITICO_ARQUETIPOS.md
+├── REPORTE_TECNICO.md
+├── FUENTES_Y_DATOS.md
+├── requirements.txt
 ├── build_all.py
 ├── data/
 │   ├── download_data.py
-│   └── raw/                         # Datasets incluidos
+│   └── raw/                         # Datasets base incluidos (creditcard.csv se genera localmente)
 ├── notebooks/                       # 5 historias
 ├── src/                             # viz, stats_helpers, narrative
 ├── docs_html/                       # HTML estático con salidas ejecutadas (funcional)
@@ -114,3 +124,4 @@ Para evitar confusión, **no se listan como opciones de visualización/ejecució
 ├── docker-compose.yml
 ├── .devcontainer/
 └── .github/
+```

@@ -1,6 +1,8 @@
 # Informe Crítico: 5 Historias con Datos, 5 Arquetipos
 **Curso:** Ciencia de Datos Avanzada — **Facultad:** MATCOM, Universidad de La Habana  
-**Autor:** [Tu Nombre] — **Fecha:** 2026-11-20  
+**Autor:** Luis Calderón Denis — **Fecha:** 2026-11-20  
+
+> Este informe justifica, para cada una de las 5 historias, (1) **por qué responde al arquetipo elegido** y (2) **por qué constituye una historia con datos** (y no solo un análisis técnico), en coherencia con el dataset utilizado y con la narrativa desarrollada en los notebooks/HTML del proyecto. 
 
 ---
 
@@ -22,7 +24,7 @@ La selección no fue arbitraria. Cada arquetipo responde a una **pregunta epist�
 
 ## Historia 1: La curva que no miente — *Serie temporal + Cambio estructural*
 
-### 1.1 Qué arquetipo es y por qué este dataset lo encarna
+### 1.1 Justificación del arquetipo: por qué esta historia responde al arquetipo elegido y por qué este dataset lo encarna
 
 El arquetipo **serie temporal + cambio estructural** no es "graficar una línea con el tiempo". Es: **detectar cuándo el proceso generador de datos cambió de régimen, cuantificar la magnitud del cambio, y validar que no es artefacto**. Requiere: (a) estacionaridad por tramos, (b) método de breakpoint robusto a penalización, (c) validación out-of-sample que respete la flecha del tiempo.
 
@@ -33,7 +35,7 @@ La **Curva de Keeling (CO₂ Mauna Loa, 1958–2024)** es el *dataset canónico*
 
 **Implicación metodológica:** La estructura del dato *fuerza* el uso de STL para descomponer, de rolling OLS para cuantificar tasas, de PELT/Bai-Perron para breakpoints, y de rolling-origin CV para validación. No son "elecciones del analista"; son respuestas obligadas por la estacionalidad dominante, el missingness invernal y la no-estacionariedad de la pendiente.
 
-### 1.2 Por qué es "historia con datos" y no "análisis de serie temporal"
+### 1.2 Justificación como historia con datos: por qué no es solo un análisis de serie temporal
 
 | Dimensión | Análisis tradicional | Nuestra historia con datos |
 |-----------|---------------------|----------------------------|
@@ -55,7 +57,7 @@ En términos del dataset, la serie mensual de Mauna Loa (NOAA/ESRL) no es solo u
 
 ## Historia 2: Cuando el promedio miente — *Comparación multivariable + Paradoja de Simpson*
 
-### 2.1 Qué arquetipo es y por qué este dataset lo encarna
+### 2.1 Justificación del arquetipo: por qué esta historia responde al arquetipo elegido y por qué este dataset lo encarna
 
 El arquetipo **comparación multivariable + Paradoja de Simpson** es: **la agregación oculta o invierte la relación condicional**. No basta con "hay grupos". Requiere: (a) jerarquía natural con varianza within/between, (b) test formal de inversión (β_within vs β_between vs β_pooled), (c) modelo que absorba confounding invariante (FE) vs modelo que lo asuma aleatorio (RE), (d) validación out-of-sample que respete la agrupación.
 
@@ -67,7 +69,7 @@ El arquetipo **comparación multivariable + Paradoja de Simpson** es: **la agreg
 
 **Implicación metodológica:** La estructura de panel *obliga* a descomponer varianza (within/between), a comparar FE vs RE (Hausman), y a validar con LOOCV por país. No se puede "correr una regresión y listo"; la estructura jerárquica del dato *exige* descomponer el efecto en sus componentes within y between para entender si la relación marginal es engañosa.
 
-### 2.2 Por qué es "historia con datos" y no "regresión con dummies"
+### 2.2 Justificación como historia con datos: por qué no es solo una regresión con dummies
 
 | Dimensión | Análisis tradicional | Nuestra historia con datos |
 |-----------|---------------------|----------------------------|
@@ -86,7 +88,7 @@ El arquetipo **comparación multivariable + Paradoja de Simpson** es: **la agreg
 
 ## Historia 3: La aguja en el pajar financiero — *Outliers + Detección de anomalías*
 
-### 3.1 Qué arquetipo es y por qué este dataset lo encarna
+### 3.1 Justificación del arquetipo: por qué esta historia responde al arquetipo elegido y por qué este dataset lo encarna
 
 El arquetipo **outliers + detección de anomalías** en *rare event detection* no es "encontrar puntos raros". Es: **optimizar un trade-off operativo bajo imbalance extremo, costos asimétricos y concept drift, validando sin leakage temporal**. Requiere: (a) métricas operacionales (PR-AUC, recall@precision, expected cost, Fβ), (b) split temporal estricto (día 1 → día 2), (c) benchmark supervisado honesto, (d) sensibilidad a hiperparámetros críticos (contamination), (e) roadmap a producción.
 
@@ -98,7 +100,7 @@ El arquetipo **outliers + detección de anomalías** en *rare event detection* n
 
 **Implicación metodológica:** El imbalance extremo *obliga* a abandonar accuracy y usar PR-AUC, expected cost, Fβ. El PCA anonimizado *obliga* a comparar no supervisado (Isolation Forest) vs supervisado (XGBoost) para cuantificar el valor marginal de los labels. El split temporal *es la única validación honesta*; random split sería leakage catastrófico en series temporales con drift.
 
-### 3.2 Por qué es "historia con datos" y no "clasificación desbalanceada"
+### 3.2 Justificación como historia con datos: por qué no es solo un ejercicio de clasificación desbalanceada
 
 | Dimensión | Análisis tradicional | Nuestra historia con datos |
 |-----------|---------------------|----------------------------|
@@ -121,7 +123,7 @@ La coherencia con el dataset utilizado es explícita: las métricas, particiones
 
 ## Historia 4: Pingüinos como termómetros — *Drill-down jerárquico + Descomposición de varianza*
 
-### 4.1 Qué arquetipo es y por qué este dataset lo encarna
+### 4.1 Justificación del arquetipo: por qué esta historia responde al arquetipo elegido y por qué este dataset lo encarna
 
 El arquetipo **drill-down jerárquico + descomposición de varianza** no es "hacer groupby". Es: **quantificar qué nivel de una jerarquía anidada (o cruzada) explica la variabilidad, y cómo cambia la inferencia al descender**. Requiere: (a) ICC "naked" en cada nivel, (b) modelo mixto que respete estructura cruzada vs anidada, (c) variance partitioning (η² parcial), (d) validación que generalice a *nuevos grupos* (LOO-Island), (e) reconocimiento honesto de diseño incompleto.
 
@@ -133,7 +135,7 @@ El arquetipo **drill-down jerárquico + descomposición de varianza** no es "hac
 
 **Implicación metodológica:** El diseño incompleto *prohíbe* un modelo anidado simple (especie dentro de isla). *Obliga* a crossed random effects o a fixed effects de especie + random de isla. El ICC naked (67% especie) vs ICC condicional (2.7% isla|especie) *es* el hallazgo metodológico: la inferencia cambia radicalmente al ajustar por el nivel superior. El LOO-Island CV (RMSE=320g) *es* la validación honesta: ¿generaliza a una isla no vista?
 
-### 4.2 Por qué es "historia con datos" y no "ANOVA con anidamiento"
+### 4.2 Justificación como historia con datos: por qué no es solo un ANOVA con anidamiento
 
 | Dimensión | Análisis tradicional | Nuestra historia con datos |
 |-----------|---------------------|----------------------------|
@@ -152,7 +154,7 @@ El arquetipo **drill-down jerárquico + descomposición de varianza** no es "hac
 
 ## Historia 5: ¿Ingreso causa precio o es la playa? — *Intersección multivariable + Causalidad observacional*
 
-### 5.1 Qué arquetipo es y por qué este dataset lo encarna
+### 5.1 Justificación del arquetipo: por qué esta historia responde al arquetipo elegido y por qué este dataset lo encarna
 
 El arquetipo **intersección multivariable + causalidad observacional** no es "regresión múltiple". Es: **desenredar efecto causal parcial de un tratamiento continuo (MedInc) bajo confounding espacial fuerte, heterogeneidad de tratamiento (CATE), y sensibilidad a confounding no observado (Oster δ), validando con CV espacial que respete autocorrelación**. Requiere: (a) Moran's I en residuos OLS → diagnóstico de inconsistencia, (b) escalera causal: OLS → SAR (ρ) → GBT/SHAP → Causal Forest (CATE) → Oster δ, (c) Spatial Block CV (k=5) vs random CV.
 
@@ -165,7 +167,7 @@ El arquetipo **intersección multivariable + causalidad observacional** no es "r
 
 **Implicación metodológica:** La autocorrelación espacial (Moran's I=0.32) *invalida* OLS y *exige* SAR o Spatial Block CV. El top-coding (5.2%) *exige* Tobit o imputación de cola. El confounding no observado *exige* Oster δ. La heterogeneidad espacial (CATE 3x) *exige* Causal Forest. Cada violación de supuestos *añade un escalón* a la escalera causal. No se puede "correr un modelo y listo"; cada diagnóstico *agrega* un método.
 
-### 5.2 Por qué es "historia con datos" y no "modelo hedónico"
+### 5.2 Justificación como historia con datos: por qué no es solo un modelo hedónico
 
 | Dimensión | Análisis tradicional | Nuestra historia con datos |
 |-----------|---------------------|----------------------------|

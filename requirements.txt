@@ -1,0 +1,31 @@
+# Dependencias núcleo para ejecutar las 5 historias (venv + pip)
+# Recomendado: Python 3.10+
+
+# Datos y cómputo científico
+numpy>=1.24
+pandas>=2.0
+scipy>=1.10
+
+# Visualización
+matplotlib>=3.7
+seaborn>=0.12
+plotly>=5.15
+
+# Modelado y estadística
+scikit-learn>=1.3
+statsmodels>=0.14
+
+# Notebooks y exportación HTML
+jupyter>=1.0
+notebook>=7.0
+nbconvert>=7.0
+ipykernel>=6.0
+
+# --- Dependencias opcionales (mejoran análisis/modelos específicos; hay fallbacks) ---
+# ruptures>=1.1          # detección de change-points (historia 1)
+# xgboost>=2.0           # modelo supervisado en fraude (historia 3)
+# shap>=0.42             # interpretabilidad (historia 3/5)
+# prophet>=1.1           # pronóstico de series (historia 1)
+# pmdarima>=2.0          # ARIMA auto (historia 1)
+# libpysal>=4.7 esda>=2.5 splot>=1.1 spreg>=1.4  # análisis espacial (historia 5)
+# econml>=0.14           # efectos causales heterogéneos (historia 5)
