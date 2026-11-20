@@ -7796,39 +7796,41 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7a3d314e">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2fd50715">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="%C2%BFIngreso-causa-precio-o-es-la-playa?-Vivienda-en-California-y-el-confounding-espacial">¿Ingreso causa precio o es la playa? Vivienda en California y el confounding espacial<a class="anchor-link" href="#%C2%BFIngreso-causa-precio-o-es-la-playa?-Vivienda-en-California-y-el-confounding-espacial">¶</a></h1><h2 id="Intersecci%C3%B3n-multivariable-+-causalidad-observacional-%E2%80%94-%C2%BFMedInc-causa-MedHouseVal-o-es-confusi%C3%B3n-espacial?">Intersección multivariable + causalidad observacional — ¿MedInc causa MedHouseVal o es confusión espacial?<a class="anchor-link" href="#Intersecci%C3%B3n-multivariable-+-causalidad-observacional-%E2%80%94-%C2%BFMedInc-causa-MedHouseVal-o-es-confusi%C3%B3n-espacial?">¶</a></h2><p><strong>Pregunta central:</strong> Al controlar por ubicación geográfica (coordenadas), densidad, y características de vecindario, ¿cuál es el efecto causal parcial de ingreso mediano (MedInc) sobre valor mediano de vivienda (MedHouseVal), y cómo varía espacialmente (heterogeneidad de tratamiento)?</p>
+<h1 id="%C2%BFIngreso-y-precio-de-la-vivienda:-asociaci%C3%B3n-o-confounding-espacial?-(California,-1990)">¿Ingreso y precio de la vivienda: asociación o confounding espacial? (California, 1990)<a class="anchor-link" href="#%C2%BFIngreso-y-precio-de-la-vivienda:-asociaci%C3%B3n-o-confounding-espacial?-(California,-1990)">¶</a></h1><h2 id="Intersecci%C3%B3n-multivariable-+-causalidad-observacional-%E2%80%94-evidencia-condicional,-no-identificaci%C3%B3n-causal-definitiva">Intersección multivariable + causalidad observacional — evidencia condicional, no identificación causal definitiva<a class="anchor-link" href="#Intersecci%C3%B3n-multivariable-+-causalidad-observacional-%E2%80%94-evidencia-condicional,-no-identificaci%C3%B3n-causal-definitiva">¶</a></h2><p><strong>Pregunta central:</strong> En el dataset California Housing (censo 1990, <em>block groups</em>), ¿cómo cambia la asociación entre ingreso mediano (<code>MedInc</code>) y valor mediano de la vivienda (<code>MedHouseVal</code>) al condicionar por características de la vivienda y ubicación geográfica, y qué indica esto sobre posible confounding espacial y heterogeneidad?</p>
+<blockquote>
+<p><strong>Alcance inferencial:</strong> se reportan asociaciones condicionales y resultados predictivos/diagnósticos según los modelos efectivamente ejecutados en el entorno. En datos observacionales transversales sin estrategia de identificación cuasi-experimental, esto <strong>no</strong> equivale a estimar un efecto causal definitivo.</p>
+</blockquote>
 <hr/>
-<h2 id="1.-Contexto:-YIMBY-vs-NIMBY-%E2%80%94-el-debate-que-mueve-California-(%C2%BD-cuartilla)">1. Contexto: YIMBY vs NIMBY — el debate que mueve California (½ cuartilla)<a class="anchor-link" href="#1.-Contexto:-YIMBY-vs-NIMBY-%E2%80%94-el-debate-que-mueve-California-(%C2%BD-cuartilla)">¶</a></h2>
+<h2 id="1.-Contexto:-el-debate-vivienda-ingreso-ubicaci%C3%B3n-(%C2%BD-cuartilla)">1. Contexto: el debate vivienda-ingreso-ubicación (½ cuartilla)<a class="anchor-link" href="#1.-Contexto:-el-debate-vivienda-ingreso-ubicaci%C3%B3n-(%C2%BD-cuartilla)">¶</a></h2>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4bc6ef80">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=40bbf83d">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>California tiene uno de los mercados inmobiliarios más caros y debatidos de EE. UU.: <strong>¿el ingreso explica los precios o predominan las amenities y la ubicación?</strong> La lógica YIMBY (Yes In My Backyard) enfatiza oferta e ingreso; la lógica NIMBY apunta a restricciones, amenities costeras y externalidades locales.</p>
-<p>El dataset California Housing (<code>california_housing.csv</code>, derivado de Pace &amp; Barry 1997 y disponible vía scikit-learn) ofrece ~20 mil <em>block groups</em> del censo de 1990 con variables socioeconómicas y geográficas: ingreso mediano (<code>MedInc</code>), edad de vivienda (<code>HouseAge</code>), habitaciones/dormitorios promedio (<code>AveRooms</code>, <code>AveBedrms</code>), población y ocupación (<code>Population</code>, <code>AveOccup</code>), ubicación (<code>Latitude</code>, <code>Longitude</code>) y valor mediano de la vivienda (<code>MedHouseVal</code>, en cientos de miles de USD). Esta combinación de atributos y coordenadas lo hace ideal para estudiar <strong>confounding espacial</strong> y heterogeneidad de efectos.</p>
-<p>La correlación bruta MedInc–MedHouseVal es positiva y fuerte, pero no prueba causalidad: vecindarios costeros pueden tener ingresos altos y valores altos por amenities, clima y acceso a empleo, no solo por ingreso. La pregunta central es: <strong>¿cuál es el efecto parcial de MedInc al condicionar por estructura de la vivienda y ubicación, y cómo varía espacialmente?</strong></p>
-<p><strong>Hipótesis formales:</strong></p>
+<p>California es un caso emblemático de tensiones entre ingreso, oferta, amenities y localización. El dataset <code>california_housing.csv</code> (derivado de Pace &amp; Barry, 1997; disponible vía scikit-learn) contiene ~20 mil <em>block groups</em> del censo de 1990 con variables socioeconómicas, de vivienda y coordenadas: <code>MedInc</code>, <code>HouseAge</code>, <code>AveRooms</code>, <code>AveBedrms</code>, <code>Population</code>, <code>AveOccup</code>, <code>Latitude</code>, <code>Longitude</code> y <code>MedHouseVal</code>.</p>
+<p>La correlación bruta entre <code>MedInc</code> y <code>MedHouseVal</code> es positiva, pero no distingue cuánto se debe a ingreso y cuánto a ubicación/amenities correlacionadas. La historia analítica consiste en <strong>condicionar progresivamente</strong> (controles observables, estructura espacial cuando está disponible, modelos flexibles y diagnósticos) para evaluar la estabilidad de la asociación y su heterogeneidad.</p>
+<p><strong>Hipótesis (formulación condicional/observacional):</strong></p>
 <ul>
-<li>H₀: E[MedHouseVal | MedInc, X, s] = E[MedHouseVal | X, s] (MedInc no añade información condicional dado controles y espacio).</li>
-<li>H₁: ∂E[MedHouseVal | MedInc, X, s]/∂MedInc &gt; 0 (efecto parcial positivo), potencialmente heterogéneo en el espacio.</li>
+<li>H₀: una vez condicionando por covariables observables y ubicación, <code>MedInc</code> no aporta asociación adicional relevante con <code>MedHouseVal</code>.</li>
+<li>H₁: <code>MedInc</code> mantiene una asociación condicional positiva (potencialmente heterogénea en el espacio), sin interpretar esto como causalidad identificada.</li>
 </ul>
-<p><strong>Parámetros de interés:</strong> efecto parcial promedio y local (ATE/CATE aproximados), autocorrelación espacial en residuos (Moran's I), contraste OLS vs modelos con estructura espacial/ML, y sensibilidad a confounders no observados.</p>
+<p><strong>Parámetros/diagnósticos de interés (según disponibilidad):</strong> coeficientes OLS (simple y con controles), diagnóstico de autocorrelación espacial en residuos (Moran's I si hay dependencias), comparación con modelos espaciales/ML si están disponibles, heterogeneidad descriptiva/predictiva y sensibilidad a confounders no observados (Oster) como ejercicio exploratorio.</p>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=da998aed">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=63f669d0">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7838,7 +7840,7 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=3e0f3e84">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=64954853">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7900,7 +7902,7 @@ Corr MedHouseVal-Latitude: -0.1446
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=f8489c09">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=c0be9336">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7974,7 +7976,7 @@ MedHouseVal &gt; 4.5: 1247 (6.10%)
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=6f2fd056">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4d5f2fe5">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8005,7 +8007,7 @@ MedHouseVal &gt; 4.5: 1247 (6.10%)
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=fbd54ee1">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b3f59efc">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8015,7 +8017,7 @@ MedHouseVal &gt; 4.5: 1247 (6.10%)
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=d5b95361">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=6f0717f4">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8103,7 +8105,7 @@ Efecto marginal PDP (3→8): 1.956 $100k = $196k
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=0a9ce5a8">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=e67d8fad">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8111,25 +8113,30 @@ Efecto marginal PDP (3→8): 1.956 $100k = $196k
 <div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="c1"># 3. Residuales espaciales: OLS + Moran's I</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># 3. Residuales espaciales: OLS con controles + Moran's I (si disponible)</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">statsmodels.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">statsmodels.formula.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">smf</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="c1"># OLS baseline</span>
+<span class="c1"># OLS baseline con controles</span>
 <span class="n">ols</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="s1">'MedHouseVal ~ MedInc + HouseAge + AveRooms + AveBedrms + Population + AveOccup + Latitude + Longitude'</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">ols</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
 <span class="n">df</span><span class="p">[</span><span class="s1">'resid_ols'</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols</span><span class="o">.</span><span class="n">resid</span>
 
-<span class="c1"># Moran's I en residuos</span>
+<span class="c1"># Moran's I en residuos (requiere libpysal/esda)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">stats_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">morans_i</span>
 <span class="n">coords</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">'Latitude'</span><span class="p">,</span> <span class="s1">'Longitude'</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
 <span class="n">mi</span> <span class="o">=</span> <span class="n">morans_i</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'resid_ols'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Moran's I (residuos OLS): I=</span><span class="si">{</span><span class="n">mi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'I'</span><span class="p">,</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, p_sim=</span><span class="si">{</span><span class="n">mi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'p_sim'</span><span class="p">,</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, p_norm=</span><span class="si">{</span><span class="n">mi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'p_norm'</span><span class="p">,</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="k">if</span> <span class="s1">'error'</span> <span class="ow">in</span> <span class="n">mi</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Nota: </span><span class="si">{</span><span class="n">mi</span><span class="p">[</span><span class="s1">'error'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">moran_available</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mi</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="s1">'I'</span> <span class="ow">in</span> <span class="n">mi</span><span class="p">)</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">mi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'I'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">))</span>
+<span class="k">if</span> <span class="n">moran_available</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Moran's I (residuos OLS): I=</span><span class="si">{</span><span class="n">mi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'I'</span><span class="p">,</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, p_sim=</span><span class="si">{</span><span class="n">mi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'p_sim'</span><span class="p">,</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, p_norm=</span><span class="si">{</span><span class="n">mi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'p_norm'</span><span class="p">,</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Moran's I no disponible en este entorno o no calculable: </span><span class="si">{</span><span class="n">mi</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="c1"># Mapa residuos</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.viz</span><span class="w"> </span><span class="kn">import</span> <span class="n">save_fig</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">sc</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Longitude</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">Latitude</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">'resid_ols'</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'RdBu'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Residuos OLS (rojo=subestima, azul=sobrestima)'</span><span class="p">)</span>
@@ -8162,8 +8169,7 @@ Latitude      -0.4205      0.007    -58.143      0.000      -0.435      -0.406
 Longitude     -0.4332      0.008    -57.199      0.000      -0.448      -0.418
 ==============================================================================
 
-Moran's I (residuos OLS): I=nan, p_sim=nan, p_norm=nan
-Nota: libpysal/esda no instalados
+Moran's I no disponible en este entorno o no calculable: {'I': nan, 'p_sim': nan, 'error': 'libpysal/esda no instalados'}
 </pre>
 </div>
 </div>
@@ -8182,7 +8188,7 @@ Nota: libpysal/esda no instalados
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=64756a74">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=dbf07052">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8243,7 +8249,7 @@ Nota: libpysal/esda no instalados
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=24dfa765">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=0ec7a123">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8311,26 +8317,26 @@ Population         0.019656        0.000429
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=515b623c">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=aa55f655">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <blockquote>
-<p><strong>Lo que el mapa y los residuos sugieren:</strong> la geografía importa. La costa y los grandes núcleos urbanos conforman submercados con niveles de precio distintos al interior, por lo que modelos que ignoran <code>Latitude/Longitude</code> tienden a dejar estructura espacial en los residuos. La relación MedInc–MedHouseVal es positiva, pero su magnitud puede variar entre regiones (heterogeneidad espacial).</p>
+<p><strong>Lectura basada en evidencia observada:</strong> los mapas y las distribuciones espaciales sugieren que ubicación y submercados locales importan. Al comparar asociaciones brutas y condicionales, y al inspeccionar residuos/heterogeneidad, se evalúa si <code>MedInc</code> retiene señal una vez considerados controles y geografía. Las conclusiones deben leerse como evidencia asociacional/predictiva condicionada al dataset y a los modelos efectivamente ejecutados.</p>
 </blockquote>
-<p><strong>Hallazgos narrativos (lectura del análisis):</strong></p>
+<p><strong>Hallazgos a interpretar desde las salidas:</strong></p>
 <ol>
-<li><strong>Gradiente geográfico:</strong> la visualización espacial de precios e ingresos muestra clústeres costeros de alto valor, coherentes con amenities y mercados laborales diferenciados.</li>
-<li><strong>Confounding espacial:</strong> la inclusión de coordenadas y/o términos espaciales modifica la estimación del efecto de <code>MedInc</code>, indicando que parte de la asociación bruta estaba capturando ubicación.</li>
-<li><strong>No linealidades e interacciones:</strong> modelos flexibles (árboles/boosting) y descomposiciones de efectos revelan que el aporte de ingreso no es uniforme en todo el territorio.</li>
-<li><strong>Inferencia prudente:</strong> con datos observacionales de 1990 y posible MAUP/top-coding, los resultados se interpretan como evidencia asociacional robustecida, no como identificación causal definitiva.</li>
+<li><strong>Patrón espacial:</strong> concentración geográfica de valores e ingresos.</li>
+<li><strong>Cambio al condicionar:</strong> diferencia entre coeficiente simple y especificaciones con controles/ubicación.</li>
+<li><strong>Diagnósticos espaciales:</strong> solo se interpretan si fueron calculados (p. ej. Moran's I disponible).</li>
+<li><strong>Heterogeneidad:</strong> variación de respuestas parciales/PDP entre zonas, como señal descriptiva de no uniformidad.</li>
 </ol>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=27da8d11">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=38a3461f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8338,29 +8344,47 @@ Population         0.019656        0.000429
 <div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="c1"># Registrar hallazgos</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Registrar hallazgos (dinámicos y condicionados a lo efectivamente calculado)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">narrative</span><span class="w"> </span><span class="kn">import</span> <span class="n">hallazgo</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Markdown</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
+<span class="c1"># OLS simple (slope, se, p calculados en celda de PDP/scatter)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">hallazgo</span><span class="p">(</span>
-    <span class="sa">f</span><span class="s2">"Correlación bruta MedInc-MedHouseVal = </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'MedInc'</span><span class="p">]</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'MedHouseVal'</span><span class="p">])</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">; OLS simple β = </span><span class="si">{</span><span class="n">slope</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> $100k/$10k [IC ~</span><span class="si">{</span><span class="n">slope</span><span class="o">-</span><span class="mf">1.96</span><span class="o">*</span><span class="n">se</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">slope</span><span class="o">+</span><span class="mf">1.96</span><span class="o">*</span><span class="n">se</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">]"</span><span class="p">,</span>
-    <span class="n">evidencia</span><span class="o">=</span><span class="s2">"OLS bivariado"</span><span class="p">,</span>
-    <span class="n">ic</span><span class="o">=</span><span class="p">(</span><span class="n">slope</span><span class="o">-</span><span class="mf">1.96</span><span class="o">*</span><span class="n">se</span><span class="p">,</span> <span class="n">slope</span><span class="o">+</span><span class="mf">1.96</span><span class="o">*</span><span class="n">se</span><span class="p">),</span>
-    <span class="n">pval</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="sa">f</span><span class="s2">"Asociación bruta: correlación MedInc–MedHouseVal = </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'MedInc'</span><span class="p">]</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'MedHouseVal'</span><span class="p">])</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">; OLS bivariado β_MedInc = </span><span class="si">{</span><span class="n">slope</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> (unidades: $100k por $10k de ingreso), IC95% aprox. [</span><span class="si">{</span><span class="n">slope</span><span class="o">-</span><span class="mf">1.96</span><span class="o">*</span><span class="n">se</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">slope</span><span class="o">+</span><span class="mf">1.96</span><span class="o">*</span><span class="n">se</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">], p=</span><span class="si">{</span><span class="n">p</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2">."</span><span class="p">,</span>
+    <span class="n">evidencia</span><span class="o">=</span><span class="s2">"OLS simple (scatter/PDP) sobre el dataset cargado"</span><span class="p">,</span>
+    <span class="n">ic</span><span class="o">=</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">slope</span><span class="o">-</span><span class="mf">1.96</span><span class="o">*</span><span class="n">se</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">slope</span><span class="o">+</span><span class="mf">1.96</span><span class="o">*</span><span class="n">se</span><span class="p">)),</span>
+    <span class="n">pval</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
 <span class="p">))</span>
 
-<span class="n">mi_I</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">mi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'I'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">))</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mi</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-<span class="n">mi_p</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">mi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'p_sim'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">))</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mi</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-<span class="n">display</span><span class="p">(</span><span class="n">hallazgo</span><span class="p">(</span>
-    <span class="sa">f</span><span class="s2">"Autocorrelación espacial en residuos OLS: Moran's I = </span><span class="si">{</span><span class="n">mi_I</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> (p=</span><span class="si">{</span><span class="n">mi_p</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">)"</span><span class="p">,</span>
-    <span class="n">evidencia</span><span class="o">=</span><span class="s2">"Moran's I k=5 vecinos (si dependencias espaciales disponibles)"</span><span class="p">,</span>
-    <span class="n">ic</span><span class="o">=</span><span class="p">(</span><span class="n">mi_I</span><span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">mi_I</span><span class="o">+</span><span class="mf">0.05</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">mi_I</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">pval</span><span class="o">=</span><span class="n">mi_p</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">mi_p</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
-<span class="p">))</span>
+<span class="c1"># OLS con controles (si existe)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">b_ctrl</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ols</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">'MedInc'</span><span class="p">])</span>
+    <span class="n">ci_ctrl</span> <span class="o">=</span> <span class="n">ols</span><span class="o">.</span><span class="n">conf_int</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'MedInc'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">hallazgo</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"Asociación condicional (OLS con controles y coordenadas): β_MedInc = </span><span class="si">{</span><span class="n">b_ctrl</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, IC95% [</span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">ci_ctrl</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">ci_ctrl</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">]. Comparar con la estimación bruta permite evaluar cuánto de la asociación se atenúa al condicionar por covariables observables y ubicación (interpretación asociacional, no causal definitiva)."</span><span class="p">,</span>
+        <span class="n">evidencia</span><span class="o">=</span><span class="s2">"OLS múltiple: MedHouseVal ~ MedInc + HouseAge + AveRooms + AveBedrms + Population + AveOccup + Latitude + Longitude"</span><span class="p">,</span>
+        <span class="n">ic</span><span class="o">=</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">ci_ctrl</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">ci_ctrl</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="p">))</span>
+<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="c1"># Moran's I condicional</span>
+<span class="k">if</span> <span class="s1">'moran_available'</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">()</span> <span class="ow">and</span> <span class="n">moran_available</span><span class="p">:</span>
+    <span class="n">mi_I</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">mi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'I'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">));</span> <span class="n">mi_p</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">mi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'p_sim'</span><span class="p">,</span> <span class="n">mi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'p_norm'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)))</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">hallazgo</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"Diagnóstico espacial de residuos OLS: Moran's I = </span><span class="si">{</span><span class="n">mi_I</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> (p=</span><span class="si">{</span><span class="n">mi_p</span><span class="si">:</span><span class="s2">.4g</span><span class="si">}</span><span class="s2">), lo que sugiere dependencia espacial residual y la conveniencia de tratar la inferencia/errores con cautela."</span><span class="p">,</span>
+        <span class="n">evidencia</span><span class="o">=</span><span class="s2">"Moran's I (k=5 vecinos) sobre residuos del OLS con controles"</span><span class="p">,</span>
+        <span class="n">ic</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">pval</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">mi_p</span><span class="p">)</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">mi_p</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="p">))</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="s2">"**Hallazgo (diagnóstico espacial):** Moran's I no se calculó en esta ejecución (dependencias espaciales no disponibles o resultado no finito). No se afirma un valor numérico de autocorrelación; se mantiene la advertencia metodológica sobre posible dependencia espacial en datos georreferenciados."</span><span class="p">))</span>
 
 <span class="n">display</span><span class="p">(</span><span class="n">hallazgo</span><span class="p">(</span>
-    <span class="s2">"Efecto MedInc heterogéneo por contexto geográfico: los PDP condicionados por cuartiles de latitud sugieren pendientes distintas entre zonas costeras/urbanas y zonas interiores."</span><span class="p">,</span>
-    <span class="n">evidencia</span><span class="o">=</span><span class="s2">"PDP condicionado a cuartiles latitudinales"</span>
+    <span class="s2">"Las exploraciones de dependencia parcial por subzonas (p. ej. cuartiles de latitud) sugieren heterogeneidad espacial en la relación condicional entre ingreso y valor de vivienda dentro de este dataset."</span><span class="p">,</span>
+    <span class="n">evidencia</span><span class="o">=</span><span class="s2">"PDP global y PDP condicionados por latitud (modelos de árboles/boosting)"</span><span class="p">,</span>
+    <span class="n">ic</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">))</span>
 </pre></div>
 </div>
@@ -8374,9 +8398,9 @@ Population         0.019656        0.000429
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-OutputArea-output" data-mime-type="text/markdown" tabindex="0">
-<p><strong>Hallazgo:</strong> Correlación bruta MedInc-MedHouseVal = 0.688; OLS simple β = 0.418 $100k/$10k [IC ~0.412, 0.424]</p>
+<p><strong>Hallazgo:</strong> Asociación bruta: correlación MedInc–MedHouseVal = 0.688; OLS bivariado β_MedInc = 0.418 (unidades: $100k por $10k de ingreso), IC95% aprox. [0.412, 0.424], p=0.</p>
 <ul>
-<li>Evidencia: <code>OLS bivariado</code></li>
+<li>Evidencia: <code>OLS simple (scatter/PDP) sobre el dataset cargado</code></li>
 <li>IC 95%: [0.412, 0.424]</li>
 <li>p-valor: &lt;0.001</li>
 </ul>
@@ -8385,25 +8409,32 @@ Population         0.019656        0.000429
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-OutputArea-output" data-mime-type="text/markdown" tabindex="0">
-<p><strong>Hallazgo:</strong> Autocorrelación espacial en residuos OLS: Moran's I = nan (p=nan)</p>
+<p><strong>Hallazgo:</strong> Asociación condicional (OLS con controles y coordenadas): β_MedInc = 0.437, IC95% [0.429, 0.445]. Comparar con la estimación bruta permite evaluar cuánto de la asociación se atenúa al condicionar por covariables observables y ubicación (interpretación asociacional, no causal definitiva).</p>
 <ul>
-<li>Evidencia: <code>Moran's I k=5 vecinos (si dependencias espaciales disponibles)</code></li>
+<li>Evidencia: <code>OLS múltiple: MedHouseVal ~ MedInc + HouseAge + AveRooms + AveBedrms + Population + AveOccup + Latitude + Longitude</code></li>
+<li>IC 95%: [0.429, 0.445]</li>
 </ul>
 </div>
 </div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-OutputArea-output" data-mime-type="text/markdown" tabindex="0">
-<p><strong>Hallazgo:</strong> Efecto MedInc heterogéneo por contexto geográfico: los PDP condicionados por cuartiles de latitud sugieren pendientes distintas entre zonas costeras/urbanas y zonas interiores.</p>
+<p><strong>Hallazgo (diagnóstico espacial):</strong> Moran's I no se calculó en esta ejecución (dependencias espaciales no disponibles o resultado no finito). No se afirma un valor numérico de autocorrelación; se mantiene la advertencia metodológica sobre posible dependencia espacial en datos georreferenciados.</p>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-OutputArea-output" data-mime-type="text/markdown" tabindex="0">
+<p><strong>Hallazgo:</strong> Las exploraciones de dependencia parcial por subzonas (p. ej. cuartiles de latitud) sugieren heterogeneidad espacial en la relación condicional entre ingreso y valor de vivienda dentro de este dataset.</p>
 <ul>
-<li>Evidencia: <code>PDP condicionado a cuartiles latitudinales</code></li>
+<li>Evidencia: <code>PDP global y PDP condicionados por latitud (modelos de árboles/boosting)</code></li>
 </ul>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b4fc1a55">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=811deec4">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8413,7 +8444,7 @@ Population         0.019656        0.000429
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=e4b1e027">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=0fa4b219">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8421,26 +8452,32 @@ Population         0.019656        0.000429
 <div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="c1"># 1. Spatial Lag Model (SAR): y = ρWy + Xβ + ε</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># 1. Modelo espacial (SAR) si está disponible</span>
+<span class="n">sar</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">sar_beta_medinc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">sar_rho</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">sar_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">spreg</span><span class="w"> </span><span class="kn">import</span> <span class="n">ML_Lag</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">libpysal.weights</span><span class="w"> </span><span class="kn">import</span> <span class="n">KNN</span>
     
-    <span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'MedHouseVal'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">'MedInc'</span><span class="p">,</span> <span class="s1">'HouseAge'</span><span class="p">,</span> <span class="s1">'AveRooms'</span><span class="p">,</span> <span class="s1">'AveBedrms'</span><span class="p">,</span> <span class="s1">'Population'</span><span class="p">,</span> <span class="s1">'AveOccup'</span><span class="p">,</span> <span class="s1">'Latitude'</span><span class="p">,</span> <span class="s1">'Longitude'</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">y_sar</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'MedHouseVal'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">X_sar</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">'MedInc'</span><span class="p">,</span> <span class="s1">'HouseAge'</span><span class="p">,</span> <span class="s1">'AveRooms'</span><span class="p">,</span> <span class="s1">'AveBedrms'</span><span class="p">,</span> <span class="s1">'Population'</span><span class="p">,</span> <span class="s1">'AveOccup'</span><span class="p">,</span> <span class="s1">'Latitude'</span><span class="p">,</span> <span class="s1">'Longitude'</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">var_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'MedInc'</span><span class="p">,</span> <span class="s1">'HouseAge'</span><span class="p">,</span> <span class="s1">'AveRooms'</span><span class="p">,</span> <span class="s1">'AveBedrms'</span><span class="p">,</span> <span class="s1">'Population'</span><span class="p">,</span> <span class="s1">'AveOccup'</span><span class="p">,</span> <span class="s1">'Latitude'</span><span class="p">,</span> <span class="s1">'Longitude'</span><span class="p">]</span>
     
     <span class="n">w</span> <span class="o">=</span> <span class="n">KNN</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">'Latitude'</span><span class="p">,</span> <span class="s1">'Longitude'</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
     <span class="n">w</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="s1">'r'</span>
     
-    <span class="n">sar</span> <span class="o">=</span> <span class="n">ML_Lag</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">name_y</span><span class="o">=</span><span class="s1">'MedHouseVal'</span><span class="p">,</span> 
-               <span class="n">name_x</span><span class="o">=</span><span class="p">[</span><span class="s1">'MedInc'</span><span class="p">,</span> <span class="s1">'HouseAge'</span><span class="p">,</span> <span class="s1">'AveRooms'</span><span class="p">,</span> <span class="s1">'AveBedrms'</span><span class="p">,</span> <span class="s1">'Population'</span><span class="p">,</span> <span class="s1">'AveOccup'</span><span class="p">,</span> <span class="s1">'Latitude'</span><span class="p">,</span> <span class="s1">'Longitude'</span><span class="p">])</span>
-    
+    <span class="n">sar</span> <span class="o">=</span> <span class="n">ML_Lag</span><span class="p">(</span><span class="n">y_sar</span><span class="p">,</span> <span class="n">X_sar</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">name_y</span><span class="o">=</span><span class="s1">'MedHouseVal'</span><span class="p">,</span> <span class="n">name_x</span><span class="o">=</span><span class="n">var_names</span><span class="p">)</span>
+    <span class="n">sar_beta_medinc</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sar</span><span class="o">.</span><span class="n">betas</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">sar_rho</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sar</span><span class="o">.</span><span class="n">rho</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">sar_p</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sar</span><span class="o">.</span><span class="n">z_stat</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sar</span><span class="p">,</span> <span class="s1">'z_stat'</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"=== SPATIAL LAG (SAR) ==="</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">sar</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Rho (autocorrelación espacial): </span><span class="si">{</span><span class="n">sar</span><span class="o">.</span><span class="n">rho</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> (p=</span><span class="si">{</span><span class="n">sar</span><span class="o">.</span><span class="n">rho_p</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"β_MedInc (SAR): </span><span class="si">{</span><span class="n">sar</span><span class="o">.</span><span class="n">betas</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> (p=</span><span class="si">{</span><span class="n">sar</span><span class="o">.</span><span class="n">betas</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"spreg/libpysal no instalado - saltando SAR"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Rho (autocorrelación espacial): </span><span class="si">{</span><span class="n">sar_rho</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"β_MedInc (SAR): </span><span class="si">{</span><span class="n">sar_beta_medinc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SAR no disponible en este entorno: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="n">sar</span> <span class="o">=</span> <span class="kc">None</span>
 </pre></div>
 </div>
@@ -8454,13 +8491,13 @@ Population         0.019656        0.000429
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>spreg/libpysal no instalado - saltando SAR
+<pre>SAR no disponible en este entorno: No module named 'spreg'
 </pre>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=8e39db3c">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=308490ee">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8508,7 +8545,7 @@ Population         0.019656        0.000429
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=8ebfba43">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=cdd50624">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8516,12 +8553,17 @@ Population         0.019656        0.000429
 <div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="c1"># 3. Causal Forest (econml) para CATE: τ(x) = E[Y|MedInc+1, X=x] - E[Y|MedInc, X=x]</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># 3. Causal Forest (econml) para heterogeneidad condicional (si disponible)</span>
+<span class="n">cate</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">cate_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">cate_std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">cate_p5</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">cate_p95</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">econml.dml</span><span class="w"> </span><span class="kn">import</span> <span class="n">CausalForestDML</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">HistGradientBoostingRegressor</span>
     
-    <span class="c1"># Tratamiento continuo: MedInc</span>
     <span class="n">T</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'MedInc'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">Y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'MedHouseVal'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
     <span class="n">X_cf</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">'MedHouseVal'</span><span class="p">,</span> <span class="s1">'MedInc'</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
@@ -8539,29 +8581,27 @@ Population         0.019656        0.000429
         <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
         <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span>
     <span class="p">)</span>
-    
     <span class="n">cf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Y_train</span><span class="p">,</span> <span class="n">T_train</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X_train</span><span class="p">)</span>
-    
-    <span class="c1"># CATE en test</span>
     <span class="n">cate</span> <span class="o">=</span> <span class="n">cf</span><span class="o">.</span><span class="n">effect</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+    <span class="n">cate_mean</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">cate</span><span class="p">));</span> <span class="n">cate_std</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">cate</span><span class="p">))</span>
+    <span class="n">cate_p5</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">cate</span><span class="p">,</span> <span class="mi">5</span><span class="p">));</span> <span class="n">cate_p95</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">cate</span><span class="p">,</span> <span class="mi">95</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CATE media (estimación condicional): </span><span class="si">{</span><span class="n">cate_mean</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CATE std: </span><span class="si">{</span><span class="n">cate_std</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CATE 5%-95%: [</span><span class="si">{</span><span class="n">cate_p5</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">cate_p95</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">]"</span><span class="p">)</span>
     
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CATE media: </span><span class="si">{</span><span class="n">cate</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> $100k por $10k MedInc"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CATE std: </span><span class="si">{</span><span class="n">cate</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CATE 5%-95%: [</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">cate</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">cate</span><span class="p">,</span><span class="w"> </span><span class="mi">95</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">]"</span><span class="p">)</span>
-    
-    <span class="c1"># CATE vs Latitud</span>
-    <span class="n">lat_test</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">]</span>  <span class="c1"># Latitude es col 5 en X_cf</span>
-    
+    <span class="n">lat_test</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">]</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">src.viz</span><span class="w"> </span><span class="kn">import</span> <span class="n">save_fig</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
     <span class="n">sc</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">lat_test</span><span class="p">,</span> <span class="n">cate</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">cate</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'RdBu'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Latitud'</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'CATE ($100k por $10k MedInc)'</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Heterogeneidad del efecto causal (Causal Forest)'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'CATE'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Efecto condicional estimado'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Heterogeneidad condicional (Causal Forest, si disponible)'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Estimación'</span><span class="p">)</span>
     <span class="n">save_fig</span><span class="p">(</span><span class="s2">"05_cate_spatial"</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"econml no instalado - saltando Causal Forest"</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Causal Forest no disponible en este entorno: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8574,13 +8614,13 @@ Population         0.019656        0.000429
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>econml no instalado - saltando Causal Forest
+<pre>Causal Forest no disponible en este entorno: No module named 'econml'
 </pre>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=f09c55f2">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=d72221a6">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8666,7 +8706,7 @@ Interpretación: confounding no observado debería ser 0.0x más fuerte que conf
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=c5f01151">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=39aa5f02">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8674,51 +8714,47 @@ Interpretación: confounding no observado debería ser 0.0x más fuerte que conf
 <div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="c1"># Validación: Spatial Block CV</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Validación: Spatial Block CV (o fallback documentado)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">stats_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">spatial_block_cv</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">mean_squared_error</span><span class="p">,</span> <span class="n">r2_score</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearRegression</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">HistGradientBoostingRegressor</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">coords</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">'Latitude'</span><span class="p">,</span> <span class="s1">'Longitude'</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">cv_mode</span> <span class="o">=</span> <span class="s1">'spatial_block'</span>
 <span class="k">try</span><span class="p">:</span>
     <span class="n">splits</span> <span class="o">=</span> <span class="n">spatial_block_cv</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Spatial block CV no disponible (</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">); usando KFold como fallback."</span><span class="p">)</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">KFold</span>
+    <span class="n">cv_mode</span> <span class="o">=</span> <span class="s1">'kfold_fallback'</span>
     <span class="n">splits</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">coords</span><span class="p">))</span>
 
-<span class="n">feature_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'MedHouseVal'</span><span class="p">,</span> <span class="s1">'lat_q'</span><span class="p">]]</span>
+<span class="n">feature_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'MedHouseVal'</span><span class="p">,</span> <span class="s1">'lat_q'</span><span class="p">,</span> <span class="s1">'resid_ols'</span><span class="p">]]</span>
 <span class="n">X_all</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">feature_cols</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">'coerce'</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
 <span class="n">y_all</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'MedHouseVal'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 
 <span class="n">cv_results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'OLS'</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">'GBT'</span><span class="p">:</span> <span class="p">[]}</span>
-
 <span class="k">for</span> <span class="n">fold</span><span class="p">,</span> <span class="p">(</span><span class="n">train_idx</span><span class="p">,</span> <span class="n">test_idx</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">splits</span><span class="p">):</span>
     <span class="n">X_tr</span><span class="p">,</span> <span class="n">X_te</span> <span class="o">=</span> <span class="n">X_all</span><span class="p">[</span><span class="n">train_idx</span><span class="p">],</span> <span class="n">X_all</span><span class="p">[</span><span class="n">test_idx</span><span class="p">]</span>
     <span class="n">y_tr</span><span class="p">,</span> <span class="n">y_te</span> <span class="o">=</span> <span class="n">y_all</span><span class="p">[</span><span class="n">train_idx</span><span class="p">],</span> <span class="n">y_all</span><span class="p">[</span><span class="n">test_idx</span><span class="p">]</span>
 
-    <span class="c1"># OLS</span>
     <span class="n">ols_cv</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_tr</span><span class="p">,</span> <span class="n">y_tr</span><span class="p">)</span>
     <span class="n">pred_ols</span> <span class="o">=</span> <span class="n">ols_cv</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_te</span><span class="p">)</span>
-    <span class="n">cv_results</span><span class="p">[</span><span class="s1">'OLS'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-        <span class="s1">'rmse'</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_te</span><span class="p">,</span> <span class="n">pred_ols</span><span class="p">))),</span>
-        <span class="s1">'r2'</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">r2_score</span><span class="p">(</span><span class="n">y_te</span><span class="p">,</span> <span class="n">pred_ols</span><span class="p">))</span>
-    <span class="p">})</span>
+    <span class="n">cv_results</span><span class="p">[</span><span class="s1">'OLS'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">'rmse'</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_te</span><span class="p">,</span> <span class="n">pred_ols</span><span class="p">))),</span> <span class="s1">'r2'</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">r2_score</span><span class="p">(</span><span class="n">y_te</span><span class="p">,</span> <span class="n">pred_ols</span><span class="p">))})</span>
 
-    <span class="c1"># GBT</span>
     <span class="n">gbr_cv</span> <span class="o">=</span> <span class="n">HistGradientBoostingRegressor</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
     <span class="n">gbr_cv</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_tr</span><span class="p">,</span> <span class="n">y_tr</span><span class="p">)</span>
     <span class="n">pred_gbr</span> <span class="o">=</span> <span class="n">gbr_cv</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_te</span><span class="p">)</span>
-    <span class="n">cv_results</span><span class="p">[</span><span class="s1">'GBT'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-        <span class="s1">'rmse'</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_te</span><span class="p">,</span> <span class="n">pred_gbr</span><span class="p">))),</span>
-        <span class="s1">'r2'</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">r2_score</span><span class="p">(</span><span class="n">y_te</span><span class="p">,</span> <span class="n">pred_gbr</span><span class="p">))</span>
-    <span class="p">})</span>
+    <span class="n">cv_results</span><span class="p">[</span><span class="s1">'GBT'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">'rmse'</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_te</span><span class="p">,</span> <span class="n">pred_gbr</span><span class="p">))),</span> <span class="s1">'r2'</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">r2_score</span><span class="p">(</span><span class="n">y_te</span><span class="p">,</span> <span class="n">pred_gbr</span><span class="p">))})</span>
 
+<span class="n">cv_summary</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">cv_results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="n">rmse_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">r</span><span class="p">[</span><span class="s1">'rmse'</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">])</span>
     <span class="n">r2_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">r</span><span class="p">[</span><span class="s1">'r2'</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">])</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2"> CV: RMSE=</span><span class="si">{</span><span class="n">rmse_mean</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, R²=</span><span class="si">{</span><span class="n">r2_mean</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">cv_summary</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'rmse'</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">rmse_mean</span><span class="p">),</span> <span class="s1">'r2'</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">r2_mean</span><span class="p">)}</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2"> CV (</span><span class="si">{</span><span class="n">cv_mode</span><span class="si">}</span><span class="s2">): RMSE=</span><span class="si">{</span><span class="n">rmse_mean</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, R²=</span><span class="si">{</span><span class="n">r2_mean</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8731,29 +8767,28 @@ Interpretación: confounding no observado debería ser 0.0x más fuerte que conf
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>OLS CV: RMSE=0.0000, R²=1.0000
-GBT CV: RMSE=0.2990, R²=0.8950
+<pre>OLS CV (spatial_block): RMSE=0.7530, R²=0.5340
+GBT CV (spatial_block): RMSE=0.7486, R²=0.4776
 </pre>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=54adb24f">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=cb2e7d9d">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <blockquote>
-<p><strong>Resumen técnico (integración de resultados):</strong> El análisis combina regresión lineal con controles, diagnóstico de autocorrelación espacial (Moran's I sobre residuos), extensiones espaciales cuando están disponibles (p. ej. SAR/spatial lag) y modelos predictivos no lineales para evaluar el efecto parcial de <code>MedInc</code> y su heterogeneidad.</p>
+<p><strong>Resumen técnico (trazabilidad y alcance):</strong> El análisis parte de datos observacionales georreferenciados (1990). Se comparan especificaciones OLS (bruta y con controles), se inspeccionan residuos y heterogeneidad espacial descriptiva, y se incorporan —solo cuando el entorno lo permite— diagnósticos/modelos espaciales o de heterogeneidad condicional (Moran's I, SAR, Causal Forest, SHAP) además de validación fuera de muestra. La sensibilidad tipo Oster se usa como ejercicio de robustez ante confounders no observados, no como prueba de identificación causal. Toda afirmación numérica en la conclusión debe corresponder a resultados efectivamente calculados en esta ejecución.</p>
 </blockquote>
-<p>En conjunto, el dataset de California Housing permite narrar una historia clara de <strong>intersección multivariable y causalidad observacional</strong>: el ingreso importa, pero su señal se entrelaza con ubicación y estructura de vivienda. La comparación entre especificaciones y la evaluación fuera de muestra (incluida validación espacial por bloques cuando se implementa) ayudan a separar patrón sistemático de artefactos de agregación o dependencia espacial.</p>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=63dc7006">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f3b1ab3c">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8763,7 +8798,20 @@ GBT CV: RMSE=0.2990, R²=0.8950
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=e21f2b28">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f473c25a">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="6.-Cierre-argumental-y-trazabilidad-(dato-%E2%86%92-m%C3%A9todo-%E2%86%92-hallazgo-%E2%86%92-l%C3%ADmite)">6. Cierre argumental y trazabilidad (dato → método → hallazgo → límite)<a class="anchor-link" href="#6.-Cierre-argumental-y-trazabilidad-(dato-%E2%86%92-m%C3%A9todo-%E2%86%92-hallazgo-%E2%86%92-l%C3%ADmite)">¶</a></h2><p><strong>Desarrollo argumental (sustantivo):</strong> La historia se fundamenta en la estructura del dataset: variables socioeconómicas y de vivienda medidas en unidades espaciales (<em>block groups</em>) con coordenadas. Esa estructura implica que (1) la asociación ingreso–precio puede estar confundida por localización y amenities; (2) la dependencia espacial puede afectar inferencia y errores; (3) la relación puede ser no lineal y heterogénea entre submercados. Por ello, el análisis avanza por capas: descripción y asociación bruta, condicionamiento por observables, diagnóstico espacial, modelos flexibles/predictivos y (cuando están disponibles) extensiones espaciales o de heterogeneidad, siempre contrastando con validación y con una lectura explícita de límites (MAUP, antigüedad de datos, confounders no observados).</p>
+<p><strong>Trazabilidad:</strong> cada bloque de resultados alimenta el siguiente: el dato define el modelo pertinente; el modelo produce estimaciones/diagnósticos; la narrativa solo debe reclamar lo que esas salidas muestran. Donde una herramienta no está disponible en el entorno núcleo, la conclusión se restringe a la evidencia efectivamente obtenida.</p>
+<h3 id="Nota-de-coherencia-narrativa-y-extensi%C3%B3n">Nota de coherencia narrativa y extensión<a class="anchor-link" href="#Nota-de-coherencia-narrativa-y-extensi%C3%B3n">¶</a></h3><p>El arquetipo de intersección multivariable/confounding espacial es adecuado porque la covariación entre ingreso, ubicación y precio es el núcleo del problema en este dataset. La historia es con datos en la medida en que su argumento depende de esa covariación observada y de las comparaciones cuantitativas realizadas sobre el archivo analizado.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=98a53a56">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8771,122 +8819,55 @@ GBT CV: RMSE=0.2990, R²=0.8950
 <div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="c1"># Limitaciones explícitas</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">narrative</span><span class="w"> </span><span class="kn">import</span> <span class="n">limitacion</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
-
-<span class="n">display</span><span class="p">(</span><span class="n">limitacion</span><span class="p">(</span>
-    <span class="s2">"Datos 1990 (censo): relaciones pueden no sostener post-2008 / post-COVID / work-from-home. Cambio estructural en mercado inmobiliario."</span><span class="p">,</span>
-    <span class="s2">"alta"</span><span class="p">,</span>
-    <span class="s2">"Validar con ACS 2022 5-year estimates (block group level) o Zillow/Redfin transaction data."</span>
-<span class="p">))</span>
-
-<span class="n">display</span><span class="p">(</span><span class="n">limitacion</span><span class="p">(</span>
-    <span class="s2">"Top-coding target en 5.0 ($500k+): censoring en cola alta (5.2</span><span class="si">% o</span><span class="s2">bs). Sesga coeficientes hacia abajo en áreas caras."</span><span class="p">,</span>
-    <span class="s2">"media"</span><span class="p">,</span>
-    <span class="s2">"Tobit model / censored regression (statsmodels Tobit); o imputación múltiple cola superior con Pareto."</span>
-<span class="p">))</span>
-
-<span class="n">display</span><span class="p">(</span><span class="n">limitacion</span><span class="p">(</span>
-    <span class="s2">"Unidad de análisis = block group (MAUP): resultados sensibles a agregación espacial; ecofallacia potencial."</span><span class="p">,</span>
-    <span class="s2">"media"</span><span class="p">,</span>
-    <span class="s2">"Multi-scale analysis: replicar en tract, county, MSA; comparar estabilidad coeficientes (Openshaw &amp; Taylor 1979)."</span>
-<span class="p">))</span>
-
-<span class="n">display</span><span class="p">(</span><span class="n">limitacion</span><span class="p">(</span>
-    <span class="s2">"Confounding no observado: amenities (playas, vistas, parques), zoning restrictivo, transporte público, calidad escuelas, crimen."</span><span class="p">,</span>
-    <span class="s2">"alta"</span><span class="p">,</span>
-    <span class="s2">"Instrumental variables: Bartik shift-share (shocks empleo industriales), boundary discontinuity en school districts (Black 1999), o regression discontinuity en límites municipales."</span>
-<span class="p">))</span>
-
-<span class="n">display</span><span class="p">(</span><span class="n">limitacion</span><span class="p">(</span>
-    <span class="s2">"Tratamiento continuo (MedInc) vs binario: CATE interpreta efecto marginal local; no captura efectos no lineales globales (ej. umbrales)."</span><span class="p">,</span>
-    <span class="s2">"baja"</span><span class="p">,</span>
-    <span class="s2">"Generalized Random Forests (GRF) para dose-response curves; BART para efectos no lineales heterogéneos."</span>
-<span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-OutputArea-output" data-mime-type="text/markdown" tabindex="0">
-<p>🔴 <strong>Limitación (alta):</strong> Datos 1990 (censo): relaciones pueden no sostener post-2008 / post-COVID / work-from-home. Cambio estructural en mercado inmobiliario.</p>
-<ul>
-<li>Mitigación propuesta: Validar con ACS 2022 5-year estimates (block group level) o Zillow/Redfin transaction data.</li>
-</ul>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-OutputArea-output" data-mime-type="text/markdown" tabindex="0">
-<p>🟡 <strong>Limitación (media):</strong> Top-coding target en 5.0 ($500k+): censoring en cola alta (5.2% obs). Sesga coeficientes hacia abajo en áreas caras.</p>
-<ul>
-<li>Mitigación propuesta: Tobit model / censored regression (statsmodels Tobit); o imputación múltiple cola superior con Pareto.</li>
-</ul>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-OutputArea-output" data-mime-type="text/markdown" tabindex="0">
-<p>🟡 <strong>Limitación (media):</strong> Unidad de análisis = block group (MAUP): resultados sensibles a agregación espacial; ecofallacia potencial.</p>
-<ul>
-<li>Mitigación propuesta: Multi-scale analysis: replicar en tract, county, MSA; comparar estabilidad coeficientes (Openshaw &amp; Taylor 1979).</li>
-</ul>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-OutputArea-output" data-mime-type="text/markdown" tabindex="0">
-<p>🔴 <strong>Limitación (alta):</strong> Confounding no observado: amenities (playas, vistas, parques), zoning restrictivo, transporte público, calidad escuelas, crimen.</p>
-<ul>
-<li>Mitigación propuesta: Instrumental variables: Bartik shift-share (shocks empleo industriales), boundary discontinuity en school districts (Black 1999), o regression discontinuity en límites municipales.</li>
-</ul>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-OutputArea-output" data-mime-type="text/markdown" tabindex="0">
-<p>🟢 <strong>Limitación (baja):</strong> Tratamiento continuo (MedInc) vs binario: CATE interpreta efecto marginal local; no captura efectos no lineales globales (ej. umbrales).</p>
-<ul>
-<li>Mitigación propuesta: Generalized Random Forests (GRF) para dose-response curves; BART para efectos no lineales heterogéneos.</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e84a4e82">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="6.-Para-el-pr%C3%B3ximo-Housing-Element:-datos-transaccionales-y-discontinuidades-(%C2%BC-cuartilla)">6. Para el próximo Housing Element: datos transaccionales y discontinuidades (¼ cuartilla)<a class="anchor-link" href="#6.-Para-el-pr%C3%B3ximo-Housing-Element:-datos-transaccionales-y-discontinuidades-(%C2%BC-cuartilla)">¶</a></h2><h3 id="Nota-de-coherencia-narrativa-y-extensi%C3%B3n">Nota de coherencia narrativa y extensión<a class="anchor-link" href="#Nota-de-coherencia-narrativa-y-extensi%C3%B3n">¶</a></h3><p>Esta historia se construye sobre las variables socioeconómicas y espaciales del dataset California Housing utilizado, cuya covariación exige distinguir asociación aparente de explicación más robusta. La narrativa articula el problema de confounding y la interacción entre factores (como ingreso y localización) con evidencia derivada del propio conjunto de datos, conectando hallazgos descriptivos, modelado e interpretación contextual. Así, el relato mantiene coherencia con el dataset y se configura como historia con datos: el argumento se desarrolla a partir de patrones observados y cuantificados en los datos, y no podría sostenerse sin esa base empírica específica.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=bf1c1515">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="c1"># Conclusión estructurada</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Conclusión estructurada (dinámica, solo con resultados disponibles)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">narrative</span><span class="w"> </span><span class="kn">import</span> <span class="n">conclusion_tecnica</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Coeficientes OLS</span>
+<span class="n">b_simple</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">slope</span><span class="p">)</span> <span class="k">if</span> <span class="s1">'slope'</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">()</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">b_ctrl</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ols</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">'MedInc'</span><span class="p">])</span>
+    <span class="n">ci_ctrl</span> <span class="o">=</span> <span class="n">ols</span><span class="o">.</span><span class="n">conf_int</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'MedInc'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">b_ctrl_ci</span> <span class="o">=</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">ci_ctrl</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">ci_ctrl</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+    <span class="n">b_ctrl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">;</span> <span class="n">b_ctrl_ci</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+<span class="c1"># Oster</span>
+<span class="n">delta_oster</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="s1">'delta'</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">()</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">delta</span><span class="p">))</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">r2max_txt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">r2_max</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="s1">'r2_max'</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">()</span> <span class="k">else</span> <span class="s2">"N/D"</span>
+
+<span class="c1"># Espacial / causal avanzada (si disponible)</span>
+<span class="n">sar_txt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"β_MedInc(SAR)=</span><span class="si">{</span><span class="n">sar_beta_medinc</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, ρ=</span><span class="si">{</span><span class="n">sar_rho</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">sar_beta_medinc</span><span class="p">)</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">sar_rho</span><span class="p">))</span> <span class="k">else</span> <span class="s2">"SAR no estimado en este entorno"</span>
+<span class="n">cate_txt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"CATE media=</span><span class="si">{</span><span class="n">cate_mean</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> [p5=</span><span class="si">{</span><span class="n">cate_p5</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, p95=</span><span class="si">{</span><span class="n">cate_p95</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">]"</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">cate_mean</span><span class="p">)</span> <span class="k">else</span> <span class="s2">"Causal Forest/CATE no estimado en este entorno"</span>
+<span class="n">moran_txt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Moran's I=</span><span class="si">{</span><span class="n">mi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'I'</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> (p=</span><span class="si">{</span><span class="n">mi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'p_sim'</span><span class="p">,</span><span class="w"> </span><span class="n">mi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'p_norm'</span><span class="p">,</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">))</span><span class="si">:</span><span class="s2">.4g</span><span class="si">}</span><span class="s2">)"</span> <span class="k">if</span> <span class="p">(</span><span class="s1">'moran_available'</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">()</span> <span class="ow">and</span> <span class="n">moran_available</span><span class="p">)</span> <span class="k">else</span> <span class="s2">"Moran's I no disponible en este entorno"</span>
+
+<span class="c1"># CV</span>
+<span class="n">cv_txt</span> <span class="o">=</span> <span class="s2">"no disponible"</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">cv_txt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"CV (</span><span class="si">{</span><span class="n">cv_mode</span><span class="si">}</span><span class="s2">): OLS R²=</span><span class="si">{</span><span class="n">cv_summary</span><span class="p">[</span><span class="s1">'OLS'</span><span class="p">][</span><span class="s1">'r2'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, RMSE=</span><span class="si">{</span><span class="n">cv_summary</span><span class="p">[</span><span class="s1">'OLS'</span><span class="p">][</span><span class="s1">'rmse'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">; GBT R²=</span><span class="si">{</span><span class="n">cv_summary</span><span class="p">[</span><span class="s1">'GBT'</span><span class="p">][</span><span class="s1">'r2'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, RMSE=</span><span class="si">{</span><span class="n">cv_summary</span><span class="p">[</span><span class="s1">'GBT'</span><span class="p">][</span><span class="s1">'rmse'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span>
+<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">b_simple</span><span class="p">)</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">b_ctrl</span><span class="p">):</span>
+    <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Asociación MedInc–MedHouseVal: β simple=</span><span class="si">{</span><span class="n">b_simple</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> vs β con controles y coordenadas=</span><span class="si">{</span><span class="n">b_ctrl</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> (IC95% [</span><span class="si">{</span><span class="n">b_ctrl_ci</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">b_ctrl_ci</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">]) en unidades $100k por $10k de ingreso."</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"No fue posible reportar de forma completa los coeficientes OLS de referencia en esta ejecución."</span><span class="p">)</span>
+<span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Diagnóstico espacial: </span><span class="si">{</span><span class="n">moran_txt</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+<span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Modelos/extensiones adicionales: </span><span class="si">{</span><span class="n">sar_txt</span><span class="si">}</span><span class="s2">; </span><span class="si">{</span><span class="n">cate_txt</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">delta_oster</span><span class="p">):</span>
+    <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sensibilidad Oster (exploratoria): δ=</span><span class="si">{</span><span class="n">delta_oster</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> con R²_max=</span><span class="si">{</span><span class="n">r2max_txt</span><span class="si">}</span><span class="s2"> (no implica identificación causal)."</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"Sensibilidad Oster no disponible o no interpretable en esta ejecución."</span><span class="p">)</span>
+<span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Desempeño fuera de muestra: </span><span class="si">{</span><span class="n">cv_txt</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+
+<span class="n">respuesta</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">+</span> <span class="s2">" Lectura: evidencia observacional/condicional sujeta a confounding no observado, MAUP y antigüedad de los datos (1990); no se establece causalidad definitiva."</span>
 
 <span class="n">display</span><span class="p">(</span><span class="n">conclusion_tecnica</span><span class="p">(</span>
-    <span class="n">respuesta</span><span class="o">=</span><span class="s2">"Efecto causal parcial de MedInc en MedHouseVal: $31-38k por $10k ingreso (SAR: 0.31, OLS ctrl: 0.38, CATE media: 0.35). Confounding espacial (lat/long) explica ~18</span><span class="si">% d</span><span class="s2">el efecto bruto (0.43→0.35). Heterogeneidad espacial fuerte: CATE 3x mayor en costa (β≈0.6) vs interior (β≈0.2). Oster δ=2.3: confounding no observado necesitaría ser 2.3x más fuerte que lat/long para anular efecto."</span><span class="p">,</span>
-    <span class="n">siguiente_paso</span><span class="o">=</span><span class="s2">"Estimar modelo hedónico espacial con datos transaccionales (Zillow/Redfin 2020-2024) + boundary discontinuity design en school district boundaries (Black 1999) para identificar efecto causal de calidad escolar en precios. Complementar con Bartik IV para shocks de demanda laboral."</span><span class="p">,</span>
-    <span class="n">reproducibilidad</span><span class="o">=</span><span class="s2">"Notebook + environment.yml + spatial CV splits (k=5 blocks) en GitHub. Datos sklearn (Pace &amp; Barry 1997). Seeds fijadas (42). SAR via spreg, CATE via econml, sensitivity via Oster (2019)."</span>
+    <span class="n">respuesta</span><span class="o">=</span><span class="n">respuesta</span><span class="p">,</span>
+    <span class="n">siguiente_paso</span><span class="o">=</span><span class="s2">"Para fortalecer inferencia causal: usar datos más recientes y, si es posible, estrategias cuasi-experimentales (p. ej. discontinuidades o instrumentos plausibles) además de modelos espaciales explícitos; reportar siempre diagnósticos y supuestos junto a las estimaciones."</span><span class="p">,</span>
+    <span class="n">reproducibilidad</span><span class="o">=</span><span class="s2">"Reproducible en entorno núcleo (venv+pip, `requirements.txt`, `build_all.py`) para los componentes base (OLS, PDP, CV, Oster). Componentes espaciales/causales avanzados (SAR, Moran con libpysal/esda, Causal Forest/econml, SHAP) requieren dependencias opcionales y deben reportarse solo cuando se ejecuten."</span>
 <span class="p">))</span>
 </pre></div>
 </div>
@@ -8900,9 +8881,9 @@ GBT CV: RMSE=0.2990, R²=0.8950
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-OutputArea-output" data-mime-type="text/markdown" tabindex="0">
-<p><strong>Respuesta a la pregunta de investigación:</strong> Efecto causal parcial de MedInc en MedHouseVal: $31-38k por $10k ingreso (SAR: 0.31, OLS ctrl: 0.38, CATE media: 0.35). Confounding espacial (lat/long) explica ~18% del efecto bruto (0.43→0.35). Heterogeneidad espacial fuerte: CATE 3x mayor en costa (β≈0.6) vs interior (β≈0.2). Oster δ=2.3: confounding no observado necesitaría ser 2.3x más fuerte que lat/long para anular efecto.
-<strong>Próximo paso replicable:</strong> Estimar modelo hedónico espacial con datos transaccionales (Zillow/Redfin 2020-2024) + boundary discontinuity design en school district boundaries (Black 1999) para identificar efecto causal de calidad escolar en precios. Complementar con Bartik IV para shocks de demanda laboral.
-<strong>Reproducibilidad:</strong> Notebook + environment.yml + spatial CV splits (k=5 blocks) en GitHub. Datos sklearn (Pace &amp; Barry 1997). Seeds fijadas (42). SAR via spreg, CATE via econml, sensitivity via Oster (2019).</p>
+<p><strong>Respuesta a la pregunta de investigación:</strong> Asociación MedInc–MedHouseVal: β simple=0.418 vs β con controles y coordenadas=0.437 (IC95% [0.429, 0.445]) en unidades $100k por $10k de ingreso. Diagnóstico espacial: Moran's I no disponible en este entorno. Modelos/extensiones adicionales: SAR no estimado en este entorno; Causal Forest/CATE no estimado en este entorno. Sensibilidad Oster (exploratoria): δ=0.033 con R²_max=0.788 (no implica identificación causal). Desempeño fuera de muestra: CV (spatial_block): OLS R²=0.534, RMSE=0.753; GBT R²=0.478, RMSE=0.749. Lectura: evidencia observacional/condicional sujeta a confounding no observado, MAUP y antigüedad de los datos (1990); no se establece causalidad definitiva.
+<strong>Próximo paso replicable:</strong> Para fortalecer inferencia causal: usar datos más recientes y, si es posible, estrategias cuasi-experimentales (p. ej. discontinuidades o instrumentos plausibles) además de modelos espaciales explícitos; reportar siempre diagnósticos y supuestos junto a las estimaciones.
+<strong>Reproducibilidad:</strong> Reproducible en entorno núcleo (venv+pip, <code>requirements.txt</code>, <code>build_all.py</code>) para los componentes base (OLS, PDP, CV, Oster). Componentes espaciales/causales avanzados (SAR, Moran con libpysal/esda, Causal Forest/econml, SHAP) requieren dependencias opcionales y deben reportarse solo cuando se ejecuten.</p>
 </div>
 </div>
 </div>

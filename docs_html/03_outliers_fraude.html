@@ -7796,43 +7796,46 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e205d9d1">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=6cb14788">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="La-aguja-en-el-pajar-financiero:-%C2%BFIsolation-Forest-sirve-en-producci%C3%B3n?">La aguja en el pajar financiero: ¿Isolation Forest sirve en producción?<a class="anchor-link" href="#La-aguja-en-el-pajar-financiero:-%C2%BFIsolation-Forest-sirve-en-producci%C3%B3n?">¶</a></h1><h2 id="Outliers-+-Detecci%C3%B3n-de-anomal%C3%ADas-%E2%80%94-Rare-event-detection-con-costos-asim%C3%A9tricos">Outliers + Detección de anomalías — Rare event detection con costos asimétricos<a class="anchor-link" href="#Outliers-+-Detecci%C3%B3n-de-anomal%C3%ADas-%E2%80%94-Rare-event-detection-con-costos-asim%C3%A9tricos">¶</a></h2><p><strong>Pregunta central:</strong> ¿Puede un modelo de detección de anomalías no supervisado (Isolation Forest) identificar fraude con recall &gt;90% manteniendo precision &gt;10%, y cómo se compara con supervisado dado el extreme class imbalance?</p>
+<h1 id="La-aguja-en-el-pajar-financiero:-pipeline-de-detecci%C3%B3n-de-anomal%C3%ADas-(simulaci%C3%B3n-reproducible)">La aguja en el pajar financiero: pipeline de detección de anomalías (simulación reproducible)<a class="anchor-link" href="#La-aguja-en-el-pajar-financiero:-pipeline-de-detecci%C3%B3n-de-anomal%C3%ADas-(simulaci%C3%B3n-reproducible)">¶</a></h1><h2 id="Outliers-+-detecci%C3%B3n-de-anomal%C3%ADas-%E2%80%94-eventos-raros,-costos-asim%C3%A9tricos-y-validaci%C3%B3n-temporal">Outliers + detección de anomalías — eventos raros, costos asimétricos y validación temporal<a class="anchor-link" href="#Outliers-+-detecci%C3%B3n-de-anomal%C3%ADas-%E2%80%94-eventos-raros,-costos-asim%C3%A9tricos-y-validaci%C3%B3n-temporal">¶</a></h2><p><strong>Pregunta central (operativa/metodológica):</strong> Sobre el dataset utilizado en esta ejecución (por defecto, un <strong>proxy sintético reproducible</strong> con el esquema de referencia ULB/Kaggle), ¿cómo se construye y evalúa un pipeline de detección de fraude con métricas robustas al desbalance (PR-AUC, recall/precision, costo esperado, Fβ), validación temporal y comparación entre enfoque no supervisado y supervisado cuando hay etiquetas?</p>
+<blockquote>
+<p><strong>Alcance:</strong> los resultados cuantitativos reportados corresponden al dataset efectivamente cargado. Si se usa el proxy sintético, las cifras <strong>no</strong> se extrapolan al desempeño en fraude real; el aporte principal es la demostración del flujo metodológico y de decisión.</p>
+</blockquote>
 <hr/>
-<h2 id="1.-Contexto:-el-KPI-que-quita-el-sue%C3%B1o-a-los-bancos-(%C2%BD-cuartilla)">1. Contexto: el KPI que quita el sueño a los bancos (½ cuartilla)<a class="anchor-link" href="#1.-Contexto:-el-KPI-que-quita-el-sue%C3%B1o-a-los-bancos-(%C2%BD-cuartilla)">¶</a></h2>
+<h2 id="1.-Contexto:-por-qu%C3%A9-el-fraude-exige-m%C3%A9tricas-y-validaci%C3%B3n-distintas-(%C2%BD-cuartilla)">1. Contexto: por qué el fraude exige métricas y validación distintas (½ cuartilla)<a class="anchor-link" href="#1.-Contexto:-por-qu%C3%A9-el-fraude-exige-m%C3%A9tricas-y-validaci%C3%B3n-distintas-(%C2%BD-cuartilla)">¶</a></h2>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=554449bd">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=6766a27f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Fraude en tarjetas = <strong>el problema canónico de rare event detection</strong>. Eventos extremadamente raros (≈0.1–1%), costos asimétricos masivos:</p>
+<p>El fraude en tarjetas es un caso canónico de <em>rare event detection</em>: prevalencias muy bajas, costos asimétricos y posible deriva temporal de patrones. En este contexto:</p>
 <ul>
-<li><strong>Falso negativo (FN)</strong>: fraude no detectado = pérdida financiera directa + fricción para el cliente + impacto reputacional/compliance.</li>
-<li><strong>Falso positivo (FP)</strong>: transacción legítima bloqueada = fricción operativa y comercial.</li>
-<li><strong>Concept drift</strong>: patrones de fraude evolucionan con el tiempo (nuevos modus operandi), por lo que la validación debe ser temporal y las métricas operacionales.</li>
+<li><strong>Falso negativo (FN):</strong> fraude no detectado implica pérdida y riesgo operativo.</li>
+<li><strong>Falso positivo (FP):</strong> alerta incorrecta implica fricción operativa/comercial.</li>
+<li><strong>Deriva temporal (<em>concept drift</em>):</strong> los patrones pueden cambiar, por lo que la evaluación debe respetar el tiempo y las métricas deben ser operativas.</li>
 </ul>
-<p>La detección <strong>no supervisada</strong> (p. ej. Isolation Forest) es atractiva cuando los labels son escasos o tardíos; la supervisada (p. ej. Gradient Boosting/XGBoost) suele rendir mejor si hay etiquetas de calidad. La pregunta de negocio es: <strong>¿cuánta señal de fraude puede capturarse sin etiquetas y cuál es el valor incremental de etiquetar?</strong></p>
-<p><strong>Hipótesis formales:</strong></p>
+<p>La detección <strong>no supervisada</strong> (p. ej. Isolation Forest) puede ser útil como priorizador cuando las etiquetas son escasas o tardías; la <strong>supervisada</strong> (p. ej. Gradient Boosting/XGBoost) suele aprovechar etiquetas confiables cuando existen. La pregunta de negocio que guía el pipeline es: <strong>qué señal se puede recuperar sin etiquetas, cómo medirla correctamente y cuál es el valor incremental de etiquetar</strong>, dentro de las limitaciones del dataset analizado.</p>
+<p><strong>Hipótesis operativas (sobre el dataset cargado):</strong></p>
 <ul>
-<li>H₀: el modelo no supervisado no supera el nivel base determinado por la prevalencia (rendimiento cercano al azar en PR-AUC).</li>
-<li>H₁: el modelo no supervisado detecta estructura anómala útil (PR-AUC y recall operativo significativamente superiores a la prevalencia/base).</li>
+<li>H₀: el enfoque no supervisado no aporta señal útil por encima de la prevalencia/base en la partición temporal de prueba.</li>
+<li>H₁: el enfoque no supervisado aporta señal medible (p. ej. PR-AUC/recall operativo por encima de la base) bajo un protocolo de evaluación adecuado al desbalance.</li>
 </ul>
-<p><strong>Métricas operacionales (no accuracy):</strong> PR-AUC (Average Precision), Recall@Precision objetivo, Fβ (β=2) y costo esperado bajo matriz C_FN/C_FP.</p>
+<p><strong>Métricas empleadas:</strong> PR-AUC (Average Precision), Precision-Recall, umbral por costo esperado (C_FN/C_FP), Fβ y matriz de confusión. Se evita <em>accuracy</em> como criterio principal.</p>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7b9154d5">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=012d7211">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7842,7 +7845,7 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=65d2232b">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=d39e9df4">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7947,7 +7950,7 @@ V1-V28 std: 1.7500
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1fe00231">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=54699e39">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7960,7 +7963,7 @@ V1-V28 std: 1.7500
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=47738aac">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5504e3c3">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7970,7 +7973,7 @@ V1-V28 std: 1.7500
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=e5865da8">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=ae2df4b8">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8045,7 +8048,7 @@ Ratio: 15.5x
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=9a0e466d">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=b2de633d">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8102,7 +8105,7 @@ Ratio: 15.5x
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=d16a4ed0">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=2400c127">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8155,7 +8158,7 @@ Correlación max off-diagonal: 0.4238
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=e5b7a6bb">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=6242fb08">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8259,7 +8262,7 @@ Aviso: train sin fraudes observados (prevalencia=0.0000%); usando contamination=
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=fd1d1990">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=1f3a1742">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8337,26 +8340,33 @@ Aviso: train sin fraudes observados (prevalencia=0.0000%); usando contamination=
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2b8d2470">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=594b2d2d">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<blockquote>
-<p><strong>Lo que se observa al explorar el dataset cargado:</strong> el desbalance extremo domina el problema (la prevalencia de fraude es muy baja frente a transacciones legítimas), lo que invalida métricas como accuracy. Las distribuciones de <code>Amount</code> y los perfiles multivariados en el espacio V1–V28 suelen mostrar solapamiento entre clases: hay señal, pero no una separación perfecta, especialmente en escenarios no supervisados.</p>
-</blockquote>
-<p><strong>Hallazgos narrativos (lectura del análisis):</strong></p>
-<ol>
-<li><strong>Evaluación correcta:</strong> PR-AUC, recall a precision operativa y costo esperado son más informativos que accuracy para decidir umbrales.</li>
-<li><strong>No supervisado vs supervisado:</strong> Isolation Forest puede priorizar candidatos anómalos sin etiquetas, pero al incorporar labels (p. ej. XGBoost) suele mejorar la capacidad de discriminar fraude cuando el etiquetado es confiable.</li>
-<li><strong>Validación temporal:</strong> el split por tiempo (entrenar en tramo temprano, evaluar en tramo posterior) es crucial para aproximar despliegue real y reducir leakage.</li>
-<li><strong>Valor de los labels:</strong> la brecha de desempeño entre enfoques ilustra el trade-off operativo entre rapidez de despliegue sin etiquetas y calidad predictiva con supervisión.</li>
-</ol>
+<h1 id="Registrar-hallazgos-(din%C3%A1micos,-sobre-el-dataset-efectivamente-cargado)">Registrar hallazgos (dinámicos, sobre el dataset efectivamente cargado)<a class="anchor-link" href="#Registrar-hallazgos-(din%C3%A1micos,-sobre-el-dataset-efectivamente-cargado)">¶</a></h1><p>from narrative import hallazgo
+from IPython.display import display, Markdown
+import numpy as np</p>
+<p>base_rate = float(y_test.mean()) if len(y_test) else np.nan
+display(hallazgo(
+f"En la partición temporal de prueba (día 2), Isolation Forest obtiene PR-AUC = {pr_auc:.4f} frente a una línea base de prevalencia ≈ {base_rate:.4f}. Estas cifras corresponden al dataset cargado en esta ejecución (proxy sintético por defecto si no se reemplazó el archivo).",
+evidencia="Split temporal por Time (&lt; 1 día train, ≥ 1 día test), contamination ajustada a prevalencia de entrenamiento; métrica Average Precision",
+ic=None
+))</p>
+<p>if 'pr_auc_xgb' in globals() and not np.isnan(pr_auc_xgb):
+display(hallazgo(
+f"Modelo supervisado (XGBoost) en la misma partición: PR-AUC = {pr_auc_xgb:.4f} (Δ respecto a Isolation Forest = {pr_auc_xgb - pr_auc:.4f}). La comparación ilustra el valor potencial de etiquetas dentro de este experimento, no un desempeño garantizado en datos reales.",
+evidencia="XGBoost con ponderación por desbalance y evaluación temporal",
+ic=None
+))
+else:
+display(Markdown("<strong>Hallazgo (comparación supervisada):</strong> XGBoost no se evaluó en este entorno (dependencia opcional ausente o ejecución no disponible). Se documenta el baseline no supervisado y el protocolo para incorporar un comparador supervisado cuando existan etiquetas y dependencias."))</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=25256ab7">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=6f0dde30">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8402,7 +8412,7 @@ Aviso: train sin fraudes observados (prevalencia=0.0000%); usando contamination=
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4f873ef8">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=73bba15a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8412,7 +8422,7 @@ Aviso: train sin fraudes observados (prevalencia=0.0000%); usando contamination=
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=70827251">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=d5b2adf7">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8463,7 +8473,7 @@ IF en umbral óptimo: Recall=0.800, Precision=0.061, F2=0.234
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=b0cab9ee">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=1ee41357">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8524,7 +8534,20 @@ IF en umbral óptimo: Recall=0.800, Precision=0.061, F2=0.234
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=9660a28e">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=cb787c30">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="6.-Cierre-argumental-y-trazabilidad-(simulaci%C3%B3n/pipeline)">6. Cierre argumental y trazabilidad (simulación/pipeline)<a class="anchor-link" href="#6.-Cierre-argumental-y-trazabilidad-(simulaci%C3%B3n/pipeline)">¶</a></h2><p><strong>Desarrollo argumental (sustantivo):</strong> La historia se construye desde las propiedades del dataset cargado: (1) el desbalance fuerza a elegir métricas (PR-AUC, costo, Fβ) y descartar <em>accuracy</em>; (2) la variable temporal (<code>Time</code>) impone un <em>split</em> cronológico para evitar fuga de información y aproximar despliegue; (3) la disponibilidad (o no) de etiquetas y de dependencias opcionales determina qué comparaciones supervisadas/explicativas son realmente ejecutables. Cada resultado reportado (curvas PR, umbrales por costo, sensibilidad a <code>contamination</code>, matriz de confusión) se deriva de ese insumo y de ese protocolo.</p>
+<p><strong>Trazabilidad explícita (dato → método → hallazgo → límite):</strong> datos y esquema → preprocesamiento/partición temporal → modelos y umbrales → métricas operativas → interpretación acotada al dataset utilizado. Cuando el archivo es el proxy sintético por defecto, la conclusión es sobre el <strong>comportamiento del pipeline</strong> en ese escenario controlado, no sobre fraude real.</p>
+<h3 id="Nota-de-coherencia-narrativa-y-extensi%C3%B3n">Nota de coherencia narrativa y extensión<a class="anchor-link" href="#Nota-de-coherencia-narrativa-y-extensi%C3%B3n">¶</a></h3><p>El arquetipo de outliers/anomalías se sostiene porque la rareza de la clase positiva y los costos asimétricos organizan todas las decisiones analíticas. La narrativa es coherente con el dataset analizado y explicita que sus afirmaciones cuantitativas son específicas de esa ejecución.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=8de04b9a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8532,39 +8555,61 @@ IF en umbral óptimo: Recall=0.800, Precision=0.061, F2=0.234
 <div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="c1"># Feature importance para XGBoost (si disponible)</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Conclusión estructurada (acotada al dataset ejecutado)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">narrative</span><span class="w"> </span><span class="kn">import</span> <span class="n">conclusion_tecnica</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">confusion_matrix</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">if_recall</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">recall</span><span class="p">)</span> <span class="k">if</span> <span class="s1">'recall'</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span> <span class="k">else</span> <span class="mf">0.0</span>
+<span class="n">if_prec</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">precision</span><span class="p">)</span> <span class="k">if</span> <span class="s1">'precision'</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span> <span class="k">else</span> <span class="mf">0.0</span>
+<span class="n">xgb_recall</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">xgb_prec</span> <span class="o">=</span> <span class="mf">0.0</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">xgboost</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xgb</span>
-    
-    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
-    <span class="n">xgb</span><span class="o">.</span><span class="n">plot_importance</span><span class="p">(</span><span class="n">xgb_clf</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">max_num_features</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">importance_type</span><span class="o">=</span><span class="s1">'gain'</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'XGBoost Feature Importance (gain)'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-    <span class="n">save_fig</span><span class="p">(</span><span class="s2">"03_xgb_importance"</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="k">except</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s1">'y_score_xgb'</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span> <span class="ow">and</span> <span class="n">y_score_xgb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">y_pred_xgb</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_score_xgb</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">cmx</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_xgb</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">tn</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">tp</span> <span class="o">=</span> <span class="n">cmx</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+        <span class="n">xgb_recall</span> <span class="o">=</span> <span class="n">tp</span> <span class="o">/</span> <span class="p">(</span><span class="n">tp</span> <span class="o">+</span> <span class="n">fn</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">tp</span> <span class="o">+</span> <span class="n">fn</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.0</span>
+        <span class="n">xgb_prec</span> <span class="o">=</span> <span class="n">tp</span> <span class="o">/</span> <span class="p">(</span><span class="n">tp</span> <span class="o">+</span> <span class="n">fp</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">tp</span> <span class="o">+</span> <span class="n">fp</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.0</span>
+<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
     <span class="k">pass</span>
+
+<span class="n">pr_auc_xgb_val</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">pr_auc_xgb</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="s1">'pr_auc_xgb'</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">pr_auc_xgb</span><span class="p">))</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">pr_auc_xgb_val</span><span class="p">):</span>
+    <span class="n">xgb_txt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"XGBoost (supervisado, mismo split temporal): PR-AUC=</span><span class="si">{</span><span class="n">pr_auc_xgb_val</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Recall=</span><span class="si">{</span><span class="n">xgb_recall</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2"> @ Precision=</span><span class="si">{</span><span class="n">xgb_prec</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2"> (umbral 0.5). ΔPR-AUC vs IF=</span><span class="si">{</span><span class="n">pr_auc_xgb_val</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">pr_auc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">."</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">xgb_txt</span> <span class="o">=</span> <span class="s2">"Comparador supervisado (XGBoost) no ejecutado en este entorno; se deja documentado el protocolo de evaluación."</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">conclusion_tecnica</span><span class="p">(</span>
+    <span class="n">respuesta</span><span class="o">=</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"Pipeline evaluado sobre el dataset cargado en `data/raw/creditcard.csv`: Isolation Forest (no supervisado) alcanza PR-AUC=</span><span class="si">{</span><span class="n">pr_auc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> en test temporal, con Recall=</span><span class="si">{</span><span class="n">if_recall</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2"> y Precision=</span><span class="si">{</span><span class="n">if_prec</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2"> en el umbral seleccionado por costo (C_FN=100, C_FP=1). </span><span class="si">{</span><span class="n">xgb_txt</span><span class="si">}</span><span class="s2"> "</span>
+        <span class="s2">"Interpretación: resultados válidos para esta ejecución; si el insumo es el proxy sintético por defecto, no deben extrapolarse a desempeño en fraude real."</span>
+    <span class="p">),</span>
+    <span class="n">siguiente_paso</span><span class="o">=</span><span class="s2">"Si se dispone del dataset real (ULB/Kaggle, mismo esquema), reejecutar el pipeline y comparar métricas; en cualquier caso, incorporar monitoreo temporal, calibración de umbrales por costo y estrategia de etiquetado/reentrenamiento antes de uso operativo."</span><span class="p">,</span>
+    <span class="n">reproducibilidad</span><span class="o">=</span><span class="s2">"Reproducible en entorno núcleo: `pip install -r requirements.txt` y ejecución del notebook/build con `data/raw/creditcard.csv` disponible (generable vía `python data/download_data.py`). Dependencias opcionales (p. ej. XGBoost/SHAP) amplían, pero no sustituyen, el protocolo base."</span>
+<span class="p">))</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e577a9f0">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<blockquote>
-<p><strong>Resumen técnico (integración de resultados):</strong> A partir del dataset efectivamente disponible en <code>data/raw/creditcard.csv</code>, el notebook compara un baseline no supervisado (Isolation Forest) con alternativas supervisadas, reportando métricas apropiadas al desbalance (PR-AUC/Average Precision, recall/precision en umbrales relevantes, F2 y costo esperado) y analizando sensibilidad a hiperparámetros como <code>contamination</code>.</p>
-</blockquote>
-<p>La comparación se interpreta junto con la matriz de confusión y la curva precision–recall generadas en la ejecución: el objetivo no es maximizar accuracy, sino <strong>optimizar el trade-off operativo</strong> entre fraudes detectados y falsas alarmas. Este encuadre conecta directamente el arquetipo de outliers/anomalías con decisiones reales de negocio y monitoreo en producción.</p>
-</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-OutputArea-output" data-mime-type="text/markdown" tabindex="0">
+<p><strong>Respuesta a la pregunta de investigación:</strong> Pipeline evaluado sobre el dataset cargado en <code>data/raw/creditcard.csv</code>: Isolation Forest (no supervisado) alcanza PR-AUC=0.4004 en test temporal, con Recall=80.0% y Precision=6.1% en el umbral seleccionado por costo (C_FN=100, C_FP=1). Comparador supervisado (XGBoost) no ejecutado en este entorno; se deja documentado el protocolo de evaluación. Interpretación: resultados válidos para esta ejecución; si el insumo es el proxy sintético por defecto, no deben extrapolarse a desempeño en fraude real.
+<strong>Próximo paso replicable:</strong> Si se dispone del dataset real (ULB/Kaggle, mismo esquema), reejecutar el pipeline y comparar métricas; en cualquier caso, incorporar monitoreo temporal, calibración de umbrales por costo y estrategia de etiquetado/reentrenamiento antes de uso operativo.
+<strong>Reproducibilidad:</strong> Reproducible en entorno núcleo: <code>pip install -r requirements.txt</code> y ejecución del notebook/build con <code>data/raw/creditcard.csv</code> disponible (generable vía <code>python data/download_data.py</code>). Dependencias opcionales (p. ej. XGBoost/SHAP) amplían, pero no sustituyen, el protocolo base.</p>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=86ac5bb7">
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=184f702f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8574,7 +8619,7 @@ IF en umbral óptimo: Recall=0.800, Precision=0.061, F2=0.234
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=63b65018">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=a32cbdff">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8673,7 +8718,7 @@ IF en umbral óptimo: Recall=0.800, Precision=0.061, F2=0.234
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=79e046e2">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e4de5f7a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8683,7 +8728,7 @@ IF en umbral óptimo: Recall=0.800, Precision=0.061, F2=0.234
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=16113dbe">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=539ddc23">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>

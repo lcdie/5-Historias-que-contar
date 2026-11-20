@@ -1,61 +1,63 @@
 # Fuentes y datos
 
-Este documento resume la procedencia, el rol narrativo y las consideraciones de uso de los datasets empleados en las 5 historias del proyecto. El objetivo es hacer explícita la relación entre **arquetipo, evidencia y dataset**, y favorecer la reproducibilidad y la lectura crítica.
+Este documento describe la procedencia, el rol analítico y las consideraciones de uso de los datasets empleados en las 5 historias. Complementa al informe crítico y al apéndice metodológico.
 
-> Nota: las conclusiones de cada historia se interpretan sobre el **dataset efectivamente cargado/analizado** en su notebook/HTML. Donde existen variantes posibles (p. ej. dataset real vs. proxy sintético), se indica de forma explícita.
+- Referencias formales y citas sugeridas: [`REFERENCIAS_Y_APENDICE_METODOLOGICO.md`](REFERENCIAS_Y_APENDICE_METODOLOGICO.md)
+- Parámetros/criterios metodológicos por historia: [`REFERENCIAS_Y_APENDICE_METODOLOGICO.md`](REFERENCIAS_Y_APENDICE_METODOLOGICO.md)
+
+> **Principio de coherencia:** las conclusiones de cada historia se interpretan sobre el **dataset efectivamente cargado y procesado** en la ejecución del notebook/HTML. Cuando existen variantes (p. ej. proxy sintético vs. dataset real), esto se declara y condiciona el alcance de los resultados.
 
 ## Resumen por historia
 
-| Historia | Arquetipo | Archivo(s) en `data/raw/` | Fuente / procedencia | Uso en la narrativa |
-|---|---|---|---|---|
-| 1. La curva que no miente | Serie temporal + cambio estructural | `co2_mm_mlo.csv` | Registro de CO₂ atmosférico de Mauna Loa (NOAA GML / Scripps CO₂ Program, Curva de Keeling), obtenido/procesado mediante `data/download_data.py` | Analizar tendencia, estacionalidad, variabilidad interanual y evidencia de cambios de régimen/aceleración en una serie temporal larga |
-| 2. Cuando el promedio miente | Comparación multivariable + paradoja de Simpson | `gapminder.csv` | Dataset Gapminder (indicadores por país-año: esperanza de vida, PIB per cápita, población, continente), preparado vía `data/download_data.py` | Contrastar relaciones agregadas y desagregadas (pooled/within/between), evidenciar heterogeneidad y riesgo de inferencias por agregación |
-| 3. La aguja en el pajar financiero | Outliers + detección de anomalías | `creditcard.csv` *(generado localmente, no versionado)* | **Por defecto:** proxy sintético PCA-like reproducible generado por `data/download_data.py` con el mismo esquema que la referencia ULB/Kaggle Credit Card Fraud (`Time`, `Amount`, `V1`–`V28`, `Class`). **Alternativa:** reemplazo manual por el dataset real ULB/Kaggle en la misma ruta | Estudiar detección de eventos raros bajo fuerte desbalance, costos asimétricos, validación temporal y comparación no supervisado/supervisado |
-| 4. Pingüinos como termómetros | Drill-down jerárquico + descomposición de varianza | `penguins.csv` | Palmer Penguins (palmerpenguins / Horst, Hill & Gorman), preparado vía `data/download_data.py` | Explorar jerarquías (especie/isla/sexo, etc.) y cuantificar contribuciones de niveles a la variabilidad morfológica |
-| 5. ¿Ingreso causa precio o es la playa? | Intersección multivariable / confounding espacial | `california_housing.csv` | California Housing (derivado del censo de California 1990; disponible en scikit-learn / fuentes públicas), preparado vía `data/download_data.py` | Analizar relaciones multivariadas y confounding espacial entre ingreso, localización y valor de la vivienda, con énfasis en efectos parciales y heterogeneidad |
+| Historia | Arquetipo | Archivo(s) en `data/raw/` | Fuente / procedencia | Uso en la narrativa | Alcance/advertencias clave |
+|---|---|---|---|---|---|
+| 1. La curva que no miente | Serie temporal + cambio estructural | `co2_mm_mlo.csv` | Registros de CO₂ atmosférico de Mauna Loa (NOAA GML / tradición de mediciones de Keeling), preparados vía `data/download_data.py` | Descomposición temporal, tasas de cambio, contraste de regímenes y validación/diagnóstico | Serie de estación específica (no promedio global); posibles interpolaciones/procesamiento de fuente |
+| 2. Cuando el promedio miente | Comparación multivariable + paradoja de Simpson/composición | `gapminder.csv` | Dataset Gapminder (indicadores país-año), preparado vía `data/download_data.py` | Comparación pooled/within/between y sensibilidad a la agregación | Asociación observacional; comparabilidad histórica y transformaciones influyen en la lectura |
+| 3. La aguja en el pajar financiero | Outliers + detección de anomalías | `creditcard.csv` *(no versionado; generado localmente)* | **Por defecto:** proxy sintético PCA-like reproducible (`data/download_data.py`) con esquema de referencia ULB/Kaggle. **Alternativa:** reemplazo manual por dataset real ULB/Kaggle | Pipeline de detección bajo desbalance: métricas PR/costo, umbrales y validación temporal | Con proxy: **simulación/pipeline**, no desempeño real. Con datos reales: respetar términos/licencias y releer métricas |
+| 4. Pingüinos como termómetros | Drill-down jerárquico + descomposición de varianza | `penguins.csv` | Palmer Penguins (Horst, Hill & Gorman / Palmer LTER), preparado vía `data/download_data.py` | Análisis jerárquico y partición de variabilidad morfológica | Diseño observacional no balanceado; valores faltantes; combinaciones especie–isla incompletas |
+| 5. ¿Ingreso y precio: asociación o confounding espacial? | Intersección multivariable + confounding espacial (observacional) | `california_housing.csv` | California Housing (censo 1990; Pace & Barry, 1997), preparado vía `data/download_data.py` | Asociaciones condicionales ingreso–precio, estructura espacial y heterogeneidad | Datos agregados (MAUP), antigüedad (1990), posible *top-coding*; no identificación causal sin estrategia adicional |
 
-## Detalle y consideraciones por dataset
+## Detalle por dataset
 
 ### 1) CO₂ Mauna Loa — `co2_mm_mlo.csv`
-- **Contenido típico:** fecha/periodo y mediciones de concentración de CO₂ (ppm), con posibles campos de tendencia/interpolación según formato.
-- **Relevancia para el arquetipo:** serie observacional larga y regularmente muestreada, adecuada para descomposición temporal y análisis de cambios estructurales.
-- **Consideraciones:** valores faltantes o ajustes/interpolaciones documentados por la fuente; diferencias entre mediciones y tendencia desestacionalizada; el registro puntual de Mauna Loa no equivale exactamente a un promedio global.
-- **Referencia general:** NOAA Global Monitoring Laboratory — Trends in Atmospheric Carbon Dioxide (Mauna Loa); Scripps CO₂ Program.
+- **Contenido típico:** variables temporales y mediciones/derivados de concentración de CO₂ (ppm) según el esquema cargado.
+- **Relevancia:** permite analizar estacionalidad, tendencia y variación de tasas en una serie larga.
+- **Consideraciones:** distinguir mediciones y series procesadas/interpoladas según columnas disponibles; una estación no representa exactamente un promedio global.
+- **Referencia:** NOAA GML — Mauna Loa CO₂ (ver apéndice de referencias).
 
 ### 2) Gapminder — `gapminder.csv`
-- **Contenido típico:** país, continente, año, esperanza de vida, PIB per cápita y población.
-- **Relevancia para el arquetipo:** estructura comparativa y longitudinal (panel) que permite observar agregación, heterogeneidad entre grupos y paradojas de composición/Simpson.
-- **Consideraciones:** calidad y comparabilidad histórica entre países; transformaciones (p. ej. escala logarítmica de ingreso) influyen en la interpretación; correlación observacional no implica causalidad.
-- **Referencia general:** Gapminder Foundation / gapminder.org (compilación de indicadores de desarrollo).
+- **Contenido típico:** `country`, `continent`, `year`, `lifeExp`, `gdpPercap`, `pop`.
+- **Relevancia:** estructura de panel adecuada para contrastar agregación y desagregación (pooled/within/between).
+- **Consideraciones:** comparabilidad entre países/épocas, transformaciones (p. ej. logaritmo de ingreso) y naturaleza observacional (sin identificación causal por defecto).
+- **Referencia:** Gapminder Foundation (ver apéndice).
 
 ### 3) Credit Card Fraud — `creditcard.csv` (local, no versionado)
-- **Contenido esperado:** `Time`, `V1`–`V28` (componentes PCA anonimizadas), `Amount`, `Class` (0/1).
-- **Relevancia para el arquetipo:** problema canónico de eventos raros con fuerte desbalance, donde importan métricas operativas, umbrales y validación temporal.
-- **Consideraciones clave:**
-  - En este repositorio, por defecto se usa un **proxy sintético reproducible** generado localmente para permitir ejecución sin credenciales y mantener el esquema del dataset de referencia.
-  - Las métricas absolutas dependen del dataset cargado (sintético o real); la historia enfatiza el razonamiento metodológico del arquetipo y sus trade-offs.
-  - Si se emplea el dataset real (ULB/Kaggle), deben respetarse sus términos de uso y el contexto original (anonimización PCA, horizonte temporal limitado, etc.).
-- **Referencia general:** ULB Machine Learning Group / Kaggle — *Credit Card Fraud Detection* (dataset de referencia).
+- **Esquema esperado:** `Time`, `V1`–`V28`, `Amount`, `Class`.
+- **Por defecto en este repositorio:** proxy sintético PCA-like reproducible generado por `data/download_data.py` para ejecución sin credenciales.
+- **Alternativa:** reemplazar el archivo por el dataset real ULB/Kaggle manteniendo ruta y esquema.
+- **Consideraciones:** (i) variables PCA anonimizadas limitan interpretación sustantiva de *features*; (ii) el desbalance exige métricas y validación temporal adecuadas; (iii) **si el insumo es sintético, los resultados cuantitativos son demostrativos del pipeline y no generalizables a fraude real**.
+- **Referencia canónica:** Dal Pozzolo et al. (2015) / ULB-Kaggle Credit Card Fraud Detection.
 
 ### 4) Palmer Penguins — `penguins.csv`
-- **Contenido típico:** especie, isla, medidas morfológicas (pico, aleta, masa corporal), sexo y año de observación.
-- **Relevancia para el arquetipo:** datos con estructura jerárquica/niveles naturales y desbalance de diseño, útiles para drill-down y descomposición de varianza.
-- **Consideraciones:** valores faltantes en algunas variables; diseño observacional (no experimental); no todas las combinaciones especie-isla están igualmente representadas.
-- **Referencia general:** Horst AM, Hill AP, Gorman KB (2020). *palmerpenguins*; datos originales del Palmer Station LTER.
+- **Contenido típico:** especie, isla, sexo, año y medidas morfométricas (pico, aleta, masa corporal).
+- **Relevancia:** permite drill-down jerárquico y análisis de varianza en datos de campo.
+- **Consideraciones:** valores faltantes, muestreo observacional y diseño no balanceado (no todas las combinaciones especie–isla presentes).
+- **Referencia:** Horst, Hill & Gorman; Palmer LTER.
 
 ### 5) California Housing — `california_housing.csv`
-- **Contenido típico:** variables socioeconómicas y geográficas por bloque/grupo censal (ingreso mediano, edad de vivienda, habitaciones, ocupación, latitud, longitud) y valor mediano de vivienda.
-- **Relevancia para el arquetipo:** escenario multivariable con fuerte componente espacial, adecuado para discutir confounding, dependencia espacial y heterogeneidad de efectos.
-- **Consideraciones:** datos censales de 1990 (contexto histórico); variables agregadas por área (riesgo de falacia ecológica/MAUP); posible tope/censura en valores (según versión); asociaciones no equivalen a causalidad.
-- **Referencia general:** Pace, R. Kelley and Ronald Barry (1997), *Sparse Spatial Autoregressions*; versión ampliamente difundida vía scikit-learn (`fetch_california_housing`).
+- **Contenido típico:** variables socioeconómicas y geográficas por *block group* y valor mediano de vivienda.
+- **Relevancia:** escenario multivariable con componente espacial para estudiar condicionamiento, dependencia y heterogeneidad.
+- **Consideraciones:** datos de 1990, agregación espacial (MAUP/falacia ecológica potencial), posibles límites/censura en la variable objetivo según versión; asociaciones no implican causalidad.
+- **Referencia:** Pace & Barry (1997); distribución habitual vía scikit-learn.
 
-## Reproducibilidad de los datos
+## Reproducibilidad de datos
 
-- **Script:** `python data/download_data.py` (verifica/descarga/prepara datasets y genera el proxy sintético de fraude cuando corresponde).
-- **Ubicación:** `data/raw/`.
-- **Versionado:** los datasets base (CO₂, Gapminder, Penguins, California Housing) se incluyen en el repositorio; `creditcard.csv` se excluye del control de versiones y debe generarse localmente o reemplazarse manualmente.
+- **Script:** `python data/download_data.py`
+- **Ubicación:** `data/raw/`
+- **Versionado:** se incluyen `co2_mm_mlo.csv`, `gapminder.csv`, `penguins.csv`, `california_housing.csv`; `creditcard.csv` se excluye del control de versiones y debe generarse localmente o sustituirse.
+- **Trazabilidad de ejecución:** al reportar resultados, indicar si el entorno fue núcleo/completo y, para Historia 3, si el dataset fue proxy sintético o real.
 
-## Citas y atribución
+## Citación y atribución
 
-- Este proyecto es de carácter académico. Se recomienda citar las fuentes originales de cada dataset al reutilizar resultados, figuras o análisis derivados.
-- Las bibliotecas y metodologías específicas empleadas en cada notebook se documentan en el propio notebook, en el informe crítico y en el reporte técnico del proyecto.
+- Citar las fuentes originales de los datasets y, cuando corresponda, los métodos empleados (ver `REFERENCIAS_Y_APENDICE_METODOLOGICO.md`).
+- Mantener coherencia entre: archivo de datos usado, parámetros/criterios metodológicos aplicados y resultados mostrados en notebooks/HTML.
